@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -28,6 +29,7 @@
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html { scroll-behavior:smooth; }
 
+/* ── TEXTURE OVERLAY ── */
 body {
   background: var(--marrom);
   color: var(--creme);
@@ -49,8 +51,8 @@ body::before {
 /* ── PAGES ── */
 .page { display:none; min-height:100vh; position:relative; z-index:1; }
 .page.active { display:block; }
-#page-welcome.active { display:flex; }
 
+/* Animação suave de entrada — de cima pra baixo */
 @keyframes slideDown {
   from { opacity:0; transform:translateY(-22px); }
   to   { opacity:1; transform:translateY(0); }
@@ -59,10 +61,11 @@ body::before {
   animation: slideDown 0.38s cubic-bezier(0.22,1,0.36,1) both;
 }
 
+/* Welcome fica fora do fluxo quando inativa */
 #page-welcome:not(.active) { display:none !important; }
 
 /* ══════════════════════════════════════
-   WELCOME — NOVA VERSÃO
+   WELCOME
 ══════════════════════════════════════ */
 #page-welcome {
   height: 100vh;
@@ -75,48 +78,50 @@ body::before {
 }
 
 .welcome-bg {
-  display: none;
-}
-#page-welcome::before {
-  content: '';
   position: absolute;
   inset: 0;
-  pointer-events: none;
-  z-index: 0;
   background:
-    linear-gradient(180deg, rgba(42,26,8,0.15) 0%, rgba(42,26,8,0.6) 45%, rgba(42,26,8,0.97) 100%),
+    linear-gradient(180deg, rgba(42,26,8,0.2) 0%, rgba(42,26,8,0.75) 55%, rgba(42,26,8,0.98) 100%),
     url('https://images.unsplash.com/photo-1544025162-d76694265947?w=900&q=80') center/cover no-repeat;
   animation: slowzoom 18s ease infinite alternate;
 }
 @keyframes slowzoom { from{transform:scale(1)} to{transform:scale(1.07)} }
 
-/* Chama */
+/* Chama animada no topo */
+.flame-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.flame {
+  font-size: 52px;
+  animation: flicker 1.3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 16px rgba(231,76,60,0.8));
+}
 @keyframes flicker {
   0%{transform:scaleY(1) rotate(-2deg)}
   50%{transform:scaleY(1.08) rotate(1deg)}
   100%{transform:scaleY(0.95) rotate(-1deg)}
 }
-@keyframes sway { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
-@keyframes fadeUp { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
 
-/* Logo topo */
-.welcome-logo-area {
+.welcome-content {
   position: relative;
-  z-index: 10;
+  z-index: 2;
   text-align: center;
-  animation: fadeUp 0.9s ease both;
-  margin-bottom: 28px;
+  padding: 0 28px;
+  animation: fadeUp 1.1s ease both;
 }
-.logo-cactus {
-  display: inline-block;
-  font-size: clamp(36px, 8vw, 48px);
-  filter: drop-shadow(0 0 14px rgba(212,172,13,0.65));
-  animation: sway 4s ease-in-out infinite;
-  margin-bottom: 2px;
+@keyframes fadeUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+/* Logo xilosa */
+.logo-wrap {
+  margin-bottom: 10px;
 }
 .logo-main {
   font-family: 'Rye', serif;
-  font-size: clamp(52px, 13vw, 80px);
+  font-size: clamp(52px, 14vw, 84px);
   font-weight: 400;
   color: var(--creme);
   letter-spacing: 0.04em;
@@ -128,184 +133,110 @@ body::before {
 }
 .logo-sub {
   font-family: 'Inter', sans-serif;
-  font-size: 10.5px;
-  letter-spacing: 0.42em;
+  font-size: 11px;
+  letter-spacing: 0.45em;
   color: var(--ouro);
   text-transform: uppercase;
-  margin-top: 5px;
+  margin-top: 4px;
   opacity: 0.85;
 }
+.logo-cactus {
+  display: inline-block;
+  font-size: clamp(36px, 8vw, 52px);
+  margin-bottom: 4px;
+  filter: drop-shadow(0 0 12px rgba(212,172,13,0.6));
+  animation: sway 4s ease-in-out infinite;
+}
+@keyframes sway { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+
 .welcome-divider {
-  width: 70px;
-  height: 1.5px;
+  width: 80px;
+  height: 2px;
   background: linear-gradient(90deg, transparent, var(--ouro), transparent);
-  margin: 12px auto 0;
+  margin: 14px auto;
 }
-
-/* Card central */
-.welcome-card {
-  position: relative;
-  z-index: 10;
-  width: 280px;
-  background: rgba(30, 18, 6, 0.82);
-  border: 1px solid rgba(212,180,131,0.28);
-  border-radius: 14px;
-  backdrop-filter: blur(18px);
-  padding: 18px 16px;
-  animation: fadeUp 0.9s 0.15s ease both;
-}
-
-.card-label {
+.welcome-tagline {
   font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  color: var(--ouro);
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  color: var(--bege);
   text-transform: uppercase;
-  text-align: center;
-  opacity: 0.8;
-  margin-bottom: 12px;
+  opacity: 0.75;
+  margin-bottom: 44px;
 }
 
-/* Layout horizontal: input esquerda + botão direita */
+/* Mesa form */
+.mesa-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  margin: 0 auto;
+}
 .mesa-row {
   display: flex;
-  align-items: stretch;
-  gap: 8px;
-}
-
-.mesa-input-wrap {
-  flex: 1;
-  display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.06);
-  border: 1.5px solid rgba(212,180,131,0.3);
-  border-radius: 8px;
-  padding: 8px 12px;
-  transition: border-color 0.3s;
-  min-width: 0;
+  gap: 10px;
+  justify-content: center;
 }
-.mesa-input-wrap:focus-within { border-color: var(--ouro); }
-
-.mesa-row-label {
-  font-family: 'Rye', serif;
-  font-size: 12px;
-  color: rgba(212,180,131,0.55);
-  white-space: nowrap;
-  flex-shrink: 0;
+.mesa-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--creme2);
+  text-transform: uppercase;
 }
-
 .mesa-input {
-  flex: 1;
-  background: transparent;
-  border: none;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(212,180,131,0.55);
+  backdrop-filter: blur(12px);
   color: var(--creme2);
   font-family: 'Rye', serif;
   font-size: 20px;
   font-weight: 400;
   text-align: center;
+  width: 58px;
+  padding: 4px 0;
+  border-radius: 4px;
   outline: none;
-  min-width: 0;
-  width: 100%;
+  transition: border-color 0.3s;
 }
-.mesa-input::placeholder { color: rgba(255,255,255,0.2); font-size: 13px; font-family: 'Inter', sans-serif; }
-.mesa-input::-webkit-outer-spin-button,
-.mesa-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.mesa-input[type=number] { -moz-appearance: textfield; }
+.mesa-input:focus { border-color: var(--ouro); }
+.mesa-input::placeholder { color: rgba(255,255,255,0.35); font-size: 13px; font-family: 'Inter', sans-serif; }
 
-/* Botão seta - quadrado ao lado */
 .btn-enter {
-  width: 52px;
-  height: 52px;
-  flex-shrink: 0;
-  background: var(--ouro);
-  border: none;
-  color: var(--marrom);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.25s;
-  opacity: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.btn-enter svg {
-  width: 26px;
-  height: 26px;
-  flex-shrink: 0;
-}
-.btn-enter.enabled {
-  opacity: 1;
-  pointer-events: auto;
-}
-.btn-enter.enabled:active { opacity: 0.85; transform: scale(0.95); }
-
-#mesa-error {
-  display: none;
-  color: #e07070;
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  text-align: center;
-  margin-top: 8px;
-}
-
-/* Delivery button abaixo do card */
-.delivery-area {
-  position: relative;
-  z-index: 10;
-  margin-top: 14px;
-  width: 280px;
-  animation: fadeUp 0.9s 0.28s ease both;
-}
-
-.delivery-divider {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.delivery-divider::before,
-.delivery-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: rgba(212,180,131,0.18);
-}
-.delivery-divider span {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  color: rgba(212,180,131,0.35);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.btn-delivery {
-  width: 100%;
   background: transparent;
-  border: 1.5px solid rgba(212,180,131,0.3);
-  color: rgba(212,180,131,0.7);
+  border: 2px solid var(--ouro);
+  color: var(--ouro);
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 13px 0;
+  padding: 11px 0;
   cursor: pointer;
-  border-radius: 7px;
-  transition: all 0.25s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  border-radius: 3px;
+  width: 100%;
+  min-width: 200px;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
 }
-.btn-delivery:active {
-  background: rgba(212,180,131,0.08);
-  border-color: rgba(212,180,131,0.55);
-  color: var(--bege);
+.btn-enter::before {
+  content:'';
+  position:absolute;
+  inset:0;
+  background: var(--ouro);
+  transform: translateX(-100%);
+  transition: transform 0.3s;
+  z-index: -1;
 }
-
+.btn-enter:not(:disabled):hover { color: var(--marrom); }
+.btn-enter:not(:disabled):hover::before { transform: translateX(0); }
+.btn-enter:disabled { border-color: rgba(212,172,13,0.3); color: rgba(212,172,13,0.3); cursor: default; }
+.btn-enter:not(:disabled):active { background: var(--ouro); color: var(--marrom); }
 
 /* ══════════════════════════════════════
    TOPBAR
@@ -411,6 +342,7 @@ body::before {
 ══════════════════════════════════════ */
 #page-menu { padding-bottom: 90px; }
 
+/* Section card com banner */
 .cat-section-card {
   background: var(--glass);
   border: 1px solid var(--glass-border);
@@ -445,6 +377,7 @@ body::before {
   letter-spacing: 0.05em;
 }
 
+/* Items grid */
 .items-grid {
   padding: 10px 10px 12px;
   display: flex;
@@ -452,6 +385,7 @@ body::before {
   gap: 8px;
 }
 
+/* Item card */
 .item-card {
   display: flex;
   gap: 12px;
@@ -514,6 +448,7 @@ body::before {
   color: var(--ouro2);
 }
 
+/* Qty control */
 .card-qty {
   display: flex;
   align-items: center;
@@ -555,6 +490,7 @@ body::before {
 .card-qty.zero .card-qty-minus,
 .card-qty.zero .card-qty-num { display: none; }
 
+/* Separador de categoria dentro de seção */
 .subcategory-title {
   font-family: 'Rye', serif;
   font-size: 13px;
@@ -921,6 +857,7 @@ body::before {
   font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: 13px;
+  font-weight: 700;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   padding: 16px 40px;
@@ -988,6 +925,7 @@ body::before {
   font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: 13px;
+  font-weight: 700;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   padding: 15px;
@@ -1064,7 +1002,7 @@ body::before {
 }
 
 /* ══════════════════════════════════════
-   FAB CARRINHO
+   FAB CARRINHO (substitui garçom no canto)
 ══════════════════════════════════════ */
 #fab-cart {
   position: fixed;
@@ -1100,6 +1038,9 @@ body::before {
   font-weight: 600;
 }
 
+/* Botão garçom da nav inferior - fica como ☝️ pill igual ao fab */
+/* já está no bottom-nav via .nav-btn */
+
 /* Modal garçom */
 #modal-garcom {
   position: fixed; inset: 0;
@@ -1111,290 +1052,117 @@ body::before {
   backdrop-filter: blur(4px);
 }
 
+/* ══════════════════════════════════════
+   LOADING SCREEN
+══════════════════════════════════════ */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--marrom);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  overflow: hidden;
+}
+/* bg igual ao welcome */
+#loading-screen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(42,26,8,0.2) 0%, rgba(42,26,8,0.75) 55%, rgba(42,26,8,0.98) 100%),
+    url('https://images.unsplash.com/photo-1544025162-d76694265947?w=900&q=80') center/cover no-repeat;
+  animation: slowzoom 18s ease infinite alternate;
+  z-index: 0;
+}
+#loading-screen > * { position: relative; z-index: 1; }
 
+.loading-flame {
+  font-size: 52px;
+  margin-bottom: 6px;
+  animation: flicker 1.3s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 16px rgba(231,76,60,0.8));
+}
+.loading-cactus {
+  display: inline-block;
+  font-size: clamp(36px, 8vw, 52px);
+  margin-bottom: 4px;
+  filter: drop-shadow(0 0 12px rgba(212,172,13,0.6));
+  animation: sway 4s ease-in-out infinite;
+}
+.loading-logo {
+  font-family: 'Rye', serif;
+  font-size: clamp(52px, 14vw, 84px);
+  font-weight: 400;
+  color: var(--creme);
+  letter-spacing: 0.04em;
+  line-height: 0.9;
+  text-shadow:
+    3px 3px 0 var(--marrom3),
+    6px 6px 0 rgba(0,0,0,0.4),
+    0 0 40px rgba(212,172,13,0.3);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.75} }
+.loading-tagline {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.45em;
+  color: var(--ouro);
+  text-transform: uppercase;
+  margin-top: 6px;
+  opacity: 0.85;
+}
+.loading-divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--ouro), transparent);
+  margin: 14px auto 10px;
+}
+.loading-dots { display: flex; gap: 8px; margin-top: 8px; }
+.loading-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ouro);
+  animation: ldot 1.2s ease-in-out infinite;
+}
+.loading-dot:nth-child(2){ animation-delay:0.2s; }
+.loading-dot:nth-child(3){ animation-delay:0.4s; }
 @keyframes ldot {
   0%,80%,100%{transform:scale(0.5);opacity:0.4}
   40%{transform:scale(1.1);opacity:1}
 }
-
-/* ══════════════════════════════════════
-   MODAL ALMOÇO
-══════════════════════════════════════ */
-#modal-almoco {
-  position: fixed; inset: 0;
-  z-index: 400;
-  display: none;
-  align-items: flex-end;
-  justify-content: center;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(6px);
-}
-#modal-almoco.open { display: flex; }
-
-.almoco-sheet {
-  width: 100%;
-  max-width: 480px;
-  background: #2A1A08;
-  border-top: 2px solid var(--ouro);
-  border-radius: 18px 18px 0 0;
-  padding: 20px 18px 36px;
-  max-height: 92vh;
-  overflow-y: auto;
-  animation: slideUp 0.35s cubic-bezier(0.22,1,0.36,1) both;
-}
-
-.almoco-handle {
-  width: 36px; height: 3px;
-  background: rgba(212,180,131,0.2);
-  border-radius: 2px;
-  margin: 0 auto 18px;
-}
-.almoco-title {
-  font-family: 'Rye', serif;
-  font-size: 22px;
-  color: var(--creme);
-  margin-bottom: 4px;
-  text-align: center;
-}
-.almoco-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  color: var(--ouro);
-  text-transform: uppercase;
-  opacity: 0.7;
-  text-align: center;
-  margin-bottom: 22px;
-}
-
-/* Seção */
-.al-section {
-  margin-bottom: 18px;
-}
-.al-section-title {
-  font-family: 'Inter', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(212,180,131,0.5);
-  margin-bottom: 8px;
-}
-
-/* Opção selecionável */
-.al-options { display: flex; flex-direction: column; gap: 6px; }
-.al-opt {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(255,255,255,0.04);
-  border: 1.5px solid rgba(212,180,131,0.15);
-  border-radius: 8px;
-  padding: 11px 14px;
-  cursor: pointer;
-  transition: all 0.18s;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.al-opt.selected {
-  border-color: var(--ouro);
-  background: rgba(212,172,13,0.1);
-}
-.al-opt.disabled {
-  opacity: 0.3;
-  pointer-events: none;
-}
-.al-opt-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.al-opt-icon { font-size: 18px; }
-.al-opt-name {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--creme);
-}
-.al-opt-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  color: rgba(212,180,131,0.45);
-  margin-top: 1px;
-}
-.al-opt-price {
-  font-family: 'Oswald', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ouro2);
-  flex-shrink: 0;
-}
-.al-check {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(212,180,131,0.3);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.18s;
-  margin-left: 8px;
-}
-.al-opt.selected .al-check {
-  background: var(--ouro);
-  border-color: var(--ouro);
-}
-.al-check::after {
-  content: '';
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--marrom);
-  display: none;
-}
-.al-opt.selected .al-check::after { display: block; }
-
-/* Complementos grid 2 col */
-.al-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.al-grid .al-opt { flex-direction: column; align-items: flex-start; gap: 6px; padding: 10px 12px; }
-.al-grid .al-opt .al-opt-left { gap: 6px; }
-.al-grid .al-opt .al-check { margin-left: 0; margin-top: 2px; }
-
-/* Aviso limite salada */
-.al-limit-hint {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  color: rgba(212,180,131,0.4);
-  letter-spacing: 0.05em;
-  margin-top: 6px;
-  text-align: center;
-}
-
-/* Divider */
-.al-divider {
-  height: 1px;
-  background: rgba(212,180,131,0.1);
-  margin: 6px 0 16px;
-}
-
-/* Botão confirmar */
-.btn-al-confirmar {
-  width: 100%;
-  background: var(--ouro);
-  border: none;
-  color: var(--marrom);
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  padding: 15px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 22px;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-.btn-al-confirmar:active { opacity: 0.85; transform: scale(0.98); }
-.btn-al-total {
-  font-family: 'Oswald', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-}
-
-/* ── MODAL PERGUNTA ALMOÇO ── */
-#modal-pergunta {
-  position: fixed; inset: 0;
-  z-index: 500;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.75);
-  backdrop-filter: blur(8px);
-  padding: 24px;
-}
-#modal-pergunta.open { display: flex; }
-.pergunta-card {
-  background: #2A1A08;
-  border: 1px solid rgba(212,180,131,0.3);
-  border-radius: 18px;
-  padding: 30px 24px 24px;
-  width: 100%;
-  max-width: 320px;
-  text-align: center;
-  animation: fadeUp 0.3s ease both;
-}
-.pergunta-emoji { font-size: 42px; margin-bottom: 14px; }
-.pergunta-titulo {
-  font-family: 'Rye', serif;
-  font-size: 24px;
-  color: var(--creme);
-  margin-bottom: 6px;
-  line-height: 1.1;
-}
-.pergunta-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: rgba(212,180,131,0.45);
-  margin-bottom: 26px;
-  letter-spacing: 0.05em;
-}
-.pergunta-btns {
-  display: flex;
-  gap: 10px;
-}
-.btn-perg-nao {
-  flex: 1;
-  background: none;
-  border: 1.5px solid rgba(212,180,131,0.2);
-  color: rgba(212,180,131,0.5);
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 13px 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-perg-nao:active { background: rgba(212,180,131,0.06); }
-.btn-perg-sim {
-  flex: 1.4;
-  background: var(--ouro);
-  border: none;
-  color: var(--marrom);
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  padding: 13px 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.btn-perg-sim:active { opacity: 0.85; transform: scale(0.97); }
-
 </style>
 </head>
 <body>
-<div id="js-error-box" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:red;color:white;font-size:13px;padding:10px;font-family:monospace;word-break:break-all;"></div>
 
-
-
+<!-- LOADING -->
+<div id="loading-screen">
+  <div class="loading-cactus">🌵</div>
+  <div class="loading-logo">Rancharia</div>
+  <div class="loading-tagline">Restaurante &amp; Petiscaria</div>
+  <div class="loading-divider"></div>
+  <div class="loading-dots">
+    <div class="loading-dot"></div>
+    <div class="loading-dot"></div>
+    <div class="loading-dot"></div>
+  </div>
+</div>
 
 <div class="toast" id="toast"></div>
 
-<!-- FAB Carrinho -->
-<div id="fab-cart" onclick="goPage('cart')" style="display:none;">
+<!-- FAB Carrinho pill (no lugar do ☝️) -->
+<div id="fab-cart" onclick="goPage('cart')">
   🛒 <div id="fab-cart-count">0</div>
 </div>
 
+<!-- FAB Garçom removido conforme solicitado -->
+
 <!-- Modal Garçom -->
-<div id="modal-garcom" onclick="if(event.target===this)fecharModalGarcom()" style="display:none;align-items:flex-end;">
+<div id="modal-garcom" onclick="if(event.target===this)fecharModalGarcom()" style="align-items:flex-end;">
   <div style="width:100%;max-width:480px;background:#2A1A08;border-top:2px solid #D4AC0D;border-radius:16px 16px 0 0;padding:22px 18px 34px;">
     <div style="width:36px;height:3px;background:rgba(212,180,131,0.2);border-radius:2px;margin:0 auto 18px;"></div>
     <div style="font-family:'Rye',serif;font-size:20px;color:#F5EDD8;margin-bottom:4px;">Chamar Garçom</div>
@@ -1407,190 +1175,26 @@ body::before {
   </div>
 </div>
 
-
-<!-- ══ MODAL PERGUNTA ALMOÇO ══ -->
-<div id="modal-pergunta" style="display:none;">
-  <div class="pergunta-card">
-    <div class="pergunta-emoji">🍽️</div>
-    <div class="pergunta-titulo">Vamos almoçar?</div>
-    <div class="pergunta-sub">Temos um cardápio especial hoje</div>
-    <div class="pergunta-btns">
-      <button class="btn-perg-nao" onclick="recusarAlmoco()">Talvez<br>mais tarde</button>
-      <button class="btn-perg-sim" onclick="abrirAlmoco()">Vamos! 🍖</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══ MODAL CARDÁPIO ALMOÇO ══ -->
-<div id="modal-almoco" style="display:none;">
-  <div class="almoco-sheet">
-    <div class="almoco-handle"></div>
-    <div class="almoco-title">🍽️ Almoço</div>
-    <div class="almoco-sub">Monte seu prato</div>
-
-    <!-- CARNE -->
-    <div class="al-section">
-      <div class="al-section-title">🥩 Quantidade de carne</div>
-      <div class="al-options" id="al-carnes">
-        <div class="al-opt" onclick="selecionarCarne(1, 15)" data-pcs="1">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🍖</span>
-            <div>
-              <div class="al-opt-name">1 Pedaço</div>
-              <div class="al-opt-desc">Porção individual</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="al-opt-price">R$ 15,00</span>
-            <div class="al-check"></div>
-          </div>
-        </div>
-        <div class="al-opt" onclick="selecionarCarne(2, 22)" data-pcs="2">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🍖🍖</span>
-            <div>
-              <div class="al-opt-name">2 Pedaços</div>
-              <div class="al-opt-desc">Para quem tem fome de verdade</div>
-            </div>
-          </div>
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="al-opt-price">R$ 22,00</span>
-            <div class="al-check"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="al-divider"></div>
-
-    <!-- ACOMPANHAMENTO -->
-    <div class="al-section">
-      <div class="al-section-title">🍚 Acompanhamento (escolha 1)</div>
-      <div class="al-grid" id="al-acomp">
-        <div class="al-opt" onclick="selecionarAcomp('Arroz Branco')" data-acomp="Arroz Branco">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🍚</span>
-            <div class="al-opt-name" style="font-size:12px;">Arroz Branco</div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-        <div class="al-opt" onclick="selecionarAcomp('Macarrão Espaguete')" data-acomp="Macarrão Espaguete">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🍝</span>
-            <div class="al-opt-name" style="font-size:12px;">Macarrão</div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="al-divider"></div>
-
-    <!-- FEIJÃO -->
-    <div class="al-section">
-      <div class="al-section-title">🫘 Feijão (escolha 1)</div>
-      <div class="al-options" id="al-feijao">
-        <div class="al-opt" onclick="selecionarFeijao('Feijão Caldo')" data-feijao="caldo">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🥣</span>
-            <div>
-              <div class="al-opt-name">Feijão de Caldo</div>
-              <div class="al-opt-desc">Caldoso e temperado</div>
-            </div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-        <div class="al-opt" onclick="selecionarFeijao('Feijão Tropeiro')" data-feijao="tropeiro">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🍳</span>
-            <div>
-              <div class="al-opt-name">Feijão Tropeiro</div>
-              <div class="al-opt-desc">Com bacon, linguiça e farinha</div>
-            </div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="al-divider"></div>
-
-    <!-- SALADA -->
-    <div class="al-section">
-      <div class="al-section-title">🥗 Salada (escolha até 3)</div>
-      <div class="al-grid" id="al-salada">
-        <div class="al-opt" onclick="toggleSalada('Alface')" data-salada="Alface">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🥬</span>
-            <div class="al-opt-name" style="font-size:12px;">Alface</div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-        <div class="al-opt" onclick="toggleSalada('Tomate')" data-salada="Tomate">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🍅</span>
-            <div class="al-opt-name" style="font-size:12px;">Tomate</div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-        <div class="al-opt" onclick="toggleSalada('Cenoura Ralada')" data-salada="Cenoura Ralada">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🥕</span>
-            <div class="al-opt-name" style="font-size:12px;">Cenoura</div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-        <div class="al-opt" onclick="toggleSalada('Pepino')" data-salada="Pepino">
-          <div class="al-opt-left">
-            <span class="al-opt-icon">🥒</span>
-            <div class="al-opt-name" style="font-size:12px;">Pepino</div>
-          </div>
-          <div class="al-check"></div>
-        </div>
-      </div>
-      <div class="al-limit-hint" id="al-salada-hint">Selecione até 3 opções</div>
-    </div>
-
-    <button class="btn-al-confirmar" onclick="confirmarAlmoco()">
-      Enviar Pedido &nbsp;·&nbsp; <span class="btn-al-total" id="al-total-btn">R$ 0,00</span>
-    </button>
-  </div>
-</div>
-
 <!-- ══ WELCOME ══ -->
 <div id="page-welcome" class="page active">
-
-  <!-- Logo -->
-  <div class="welcome-logo-area">
-    <div class="logo-cactus">&#127797;</div>
-    <div class="logo-main">Rancharia</div>
-    <div class="logo-sub">Restaurante &amp; Petiscaria</div>
-    <div class="welcome-divider"></div>
-  </div>
-
-  <!-- Card mesa -->
-  <div class="welcome-card">
-    <div class="card-label">Informe sua mesa</div>
-    <div class="mesa-row">
-      <div class="mesa-input-wrap">
-        <span class="mesa-row-label">Mesa</span>
-        <input class="mesa-input" id="mesa-input" type="tel" placeholder="00">
-      </div>
-      <button class="btn-enter" id="btn-enter" type="button">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
+  <div class="welcome-bg"></div>
+  <div class="welcome-content">
+    
+    <div class="logo-wrap">
+      <div class="logo-cactus">🌵</div>
+      <div class="logo-main">Rancharia</div>
+      <div class="logo-sub">Restaurante &amp; Petiscaria</div>
     </div>
-    <div id="mesa-error" style="color:#e07070;font-size:11px;text-align:center;margin-top:8px;display:none;"></div>
-  </div>
-
-  <!-- Delivery -->
-  <div class="delivery-area">
-    <div class="delivery-divider"><span>ou</span></div>
-    <button class="btn-delivery" id="btn-delivery" type="button">
-      &#128691; &nbsp;Pedir Delivery
-    </button>
+    <div class="welcome-divider"></div>
+    <div class="welcome-tagline">Juazeiro &ndash; BA &middot; O sabor do sertão</div>
+    <div class="mesa-form">
+      <div class="mesa-row">
+        <div class="mesa-label">N° Mesa</div>
+        <input class="mesa-input" id="mesa-input" type="number" min="1" max="100" placeholder="00" inputmode="numeric" oninput="onMesaInput()">
+      </div>
+      <button class="btn-enter" id="btn-enter" onclick="entrarCardapio()" disabled>Informe o N° da mesa</button>
+      <div id="mesa-error" style="display:none;color:#e07070;font-family:'Inter',sans-serif;font-size:11px;text-align:center;margin-top:3px;"></div>
+    </div>
   </div>
 </div>
 
@@ -1662,11 +1266,13 @@ body::before {
   </div>
 </div>
 
+<!-- drink-suggest-bar now rendered inline in renderCart -->
 <!-- FIXED CART ACTIONS BAR -->
 <div id="cart-fixed-actions" style="display:none;position:fixed;bottom:58px;left:0;right:0;z-index:94;background:rgba(42,26,8,0.98);backdrop-filter:blur(16px);border-top:1px solid rgba(212,180,131,0.2);padding:10px 14px 12px;gap:8px;align-items:stretch;">
   <button onclick="goPage('menu')" style="background:#ffffff;border:none;color:#2A1A08;font-family:Inter,sans-serif;font-size:11px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;padding:12px 14px;border-radius:6px;cursor:pointer;flex-shrink:0;white-space:nowrap;">Ir ao Cardápio</button>
   <button onclick="enviarPedido()" style="flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:#075e54;border:none;border-radius:6px;color:white;font-family:Inter,sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:12px 14px;cursor:pointer;"><svg viewBox="0 0 32 32" width="18" height="18" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><circle cx="16" cy="16" r="16" fill="#25D366"/><path d="M23.5 8.5C21.7 6.7 19.4 5.7 17 5.7c-5 0-9 4-9 9 0 1.6.4 3.1 1.2 4.5L8 26l7-1.8c1.3.7 2.8 1.1 4.3 1.1h.1c5 0 9-4 9-9-.1-2.4-1.1-4.6-2.9-6.3zm-6.5 13.9c-1.4 0-2.7-.4-3.9-1.1l-.3-.2-3 .8.8-2.9-.2-.3c-.8-1.2-1.2-2.6-1.2-4 0-4.2 3.4-7.5 7.5-7.5 2 0 3.9.8 5.3 2.2 1.4 1.4 2.2 3.3 2.2 5.3.1 4.1-3.3 7.7-7.2 7.7zm4.1-5.6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4.1-.1.1-.3 0-.4-.1-.1-.5-1.3-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 3.9 3.5.5.2 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1l-.3-.4z" fill="white"/></svg> Confirmar via WhatsApp</button>
 </div>
+
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav" id="bottom-nav" style="display:none;">
@@ -1688,406 +1294,451 @@ body::before {
   </button>
 </nav>
 
-
-
-<!-- MODAL SOBRE -->
-<div id="modal-sobre" onclick="if(event.target===this)fecharModalSobre()" style="display:none;position:fixed;inset:0;z-index:600;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);">
-  <div style="width:100%;max-width:480px;background:#2A1A08;border-top:2px solid #D4AC0D;border-radius:18px 18px 0 0;padding:22px 20px 38px;">
-    <div style="width:36px;height:3px;background:rgba(212,180,131,0.2);border-radius:2px;margin:0 auto 20px;"></div>
-    <div style="font-family:'Rye',serif;font-size:22px;color:#F5EDD8;margin-bottom:4px;text-align:center;">🌵 Rancharia</div>
-    <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.3em;color:#D4AC0D;text-transform:uppercase;opacity:0.7;text-align:center;margin-bottom:18px;">Restaurante & Petiscaria</div>
-    <div style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(212,180,131,0.7);line-height:1.75;text-align:center;margin-bottom:22px;">
-      Um espaço acolhedor com a melhor culinária nordestina, espetinhos artesanais, petiscos e drinks especiais.<br><br>
-      Venha saborear o sertão com estilo.
-    </div>
-    <button onclick="fecharModalSobre()" style="width:100%;background:transparent;border:1.5px solid rgba(212,180,131,0.3);color:rgba(212,180,131,0.7);font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;padding:13px;border-radius:8px;cursor:pointer;">Fechar</button>
-  </div>
-</div>
-
 <script>
-window.onerror = function(msg, src, line, col, err) {
-  var box = document.getElementById('js-error-box');
-  if (box) { box.style.display='block'; box.textContent = 'ERRO L'+line+': '+msg; }
-  return false;
-};
 var WHATSAPP = '557488052568';
 var mesaNum = '';
 var cart = [];
 var menuBuilt = false;
 var globalNote = '';
-var isDelivery = false;
-var ratingData = {};
 
+// ══════════════════════════════════════
+// MENU DATA — extraído das fotos
+// ══════════════════════════════════════
 var MENU = [
   {
     cat: 'Entradas', emoji: '🥩', id: 'entradas',
     img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',
     subcats: [
-      { label: 'Caldos (200ml / 400ml)', items: [
-        { id:'cal1', name:'Caldo de Carne',    desc:'200ml / 400ml', price:10, img:'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300&q=70' },
-        { id:'cal2', name:'Caldo de Mocoto',   desc:'200ml / 400ml', price:10, img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=300&q=70' },
-        { id:'cal3', name:'Caldo de Feijao',   desc:'200ml / 400ml', price:10, img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=300&q=70' },
-        { id:'cal4', name:'Caldo de Quenga',   desc:'200ml / 400ml', price:10, img:'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=300&q=70' }
-      ]},
-      { label: 'Pao de Alho', items: [
-        { id:'pao1', name:'Pao de Alho a Grega',         desc:'Especial da casa', price:14, img:'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=300&q=70' },
-        { id:'pao2', name:'Pao de Alho Simples',         desc:'Classico',         price:6,  img:'https://images.unsplash.com/photo-1619881585843-4a8d7bad4170?w=300&q=70' },
-        { id:'pao3', name:'Pao de Alho Mano Leo',        desc:'Receita especial', price:14, img:'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=300&q=70' },
-        { id:'pao4', name:'Pao de Alho a Moda do Cheff', desc:'A mais completa',  price:21, img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&q=70' }
-      ]},
-      { label: 'Porcoes de Pastel (6 unidades)', items: [
-        { id:'pas1', name:'Pastel So Carne',     desc:'6 unidades', price:18, img:'https://images.unsplash.com/photo-1600850056064-a8b29d88c94b?w=300&q=70' },
-        { id:'pas2', name:'Pastel So Queijo',    desc:'6 unidades', price:18, img:'https://images.unsplash.com/photo-1509722747041-616f39b57569?w=300&q=70' },
-        { id:'pas3', name:'Pastel So Calabresa', desc:'6 unidades', price:18, img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300&q=70' },
-        { id:'pas4', name:'Pastel So Frango',    desc:'6 unidades', price:20, img:'https://images.unsplash.com/photo-1598515213692-48d8f3575ed6?w=300&q=70' },
-        { id:'pas5', name:'Pastel So Camarao',   desc:'6 unidades', price:24, img:'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=300&q=70' },
-        { id:'pas6', name:'Pastel Cavaco',       desc:'6 unidades', price:12, img:'https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=300&q=70' }
-      ]},
-      { label: 'Fatiados (macaxeira, farofa, vinagrete e queijo)', items: [
-        { id:'fat1', name:'File de Bode',  desc:'Macaxeira, farofa e vinagrete', price:35, img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&q=70' },
-        { id:'fat2', name:'Carne do Sol',  desc:'Macaxeira, farofa e vinagrete', price:36, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
-        { id:'fat3', name:'Contra File',   desc:'Macaxeira, farofa e vinagrete', price:35, img:'https://images.unsplash.com/photo-1558030006-450675393462?w=300&q=70' },
-        { id:'fat4', name:'Cupim',         desc:'Macaxeira, farofa e vinagrete', price:39, img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=70' }
-      ]},
-      { label: 'Porcao de Batatas', items: [
-        { id:'bat1', name:'Batata Simples P',          desc:'300g batata',                                        price:20, img:'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=300&q=70' },
-        { id:'bat2', name:'Batata Simples G',          desc:'400g batata',                                        price:25, img:'https://images.unsplash.com/photo-1518013431117-eb1465fa5463?w=300&q=70' },
-        { id:'bat3', name:'Batata c/ Cheddar e Bacon', desc:'400g batata, cheddar e bacon 50g',                   price:33, img:'https://images.unsplash.com/photo-1630431341973-02e1b662ec35?w=300&q=70' },
-        { id:'bat4', name:'Batata a Moda do Chef',     desc:'400g batata, bacon 50g, calabresa 80g, frango 100g', price:36, img:'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300&q=70' }
-      ]}
+      {
+        label: 'Caldos (200ml / 400ml)', items: [
+          { id:'cal1', name:'Caldo de Carne',    desc:'200ml / 400ml', price:10, price2:14, img:'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300&q=70' },
+          { id:'cal2', name:'Caldo de Mocotó',   desc:'200ml / 400ml', price:10, price2:14, img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=300&q=70' },
+          { id:'cal3', name:'Caldo de Feijão',   desc:'200ml / 400ml', price:10, price2:14, img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=300&q=70' },
+          { id:'cal4', name:'Caldo de Quenga',   desc:'200ml / 400ml', price:10, price2:14, img:'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Pão de Alho', items: [
+          { id:'pao1', name:'Pão de Alho à Grega',        desc:'Especial da casa', price:14, img:'https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=300&q=70' },
+          { id:'pao2', name:'Pão de Alho Simples',        desc:'Clássico', price:6,  img:'https://images.unsplash.com/photo-1619881585843-4a8d7bad4170?w=300&q=70' },
+          { id:'pao3', name:'Pão de Alho Mano Léo',       desc:'Receita especial', price:14, img:'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=300&q=70' },
+          { id:'pao4', name:'Pão de Alho à Moda do Chéff',desc:'A mais completa', price:21, img:'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Porções de Pastel (6 unidades)', items: [
+          { id:'pas1', name:'Pastel Só Carne',     desc:'6 unidades', price:18, img:'https://images.unsplash.com/photo-1600850056064-a8b29d88c94b?w=300&q=70' },
+          { id:'pas2', name:'Pastel Só Queijo',    desc:'6 unidades', price:18, img:'https://images.unsplash.com/photo-1509722747041-616f39b57569?w=300&q=70' },
+          { id:'pas3', name:'Pastel Só Calabresa', desc:'6 unidades', price:18, img:'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=300&q=70' },
+          { id:'pas4', name:'Pastel Só Frango',    desc:'6 unidades', price:20, img:'https://images.unsplash.com/photo-1598515213692-48d8f3575ed6?w=300&q=70' },
+          { id:'pas5', name:'Pastel Só Camarão',   desc:'6 unidades', price:24, img:'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=300&q=70' },
+          { id:'pas6', name:'Pastel Cavaco',       desc:'6 unidades', price:12, img:'https://images.unsplash.com/photo-1516100882582-96c3a05fe590?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Fatiados (macaxeira, farofa, vinagrete e queijo)', items: [
+          { id:'fat1', name:'Filé de Bode',  desc:'Macaxeira, farofa e vinagrete', price:35, img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&q=70' },
+          { id:'fat2', name:'Carne do Sol',  desc:'Macaxeira, farofa e vinagrete', price:36, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
+          { id:'fat3', name:'Contra Filé',   desc:'Macaxeira, farofa e vinagrete', price:35, img:'https://images.unsplash.com/photo-1558030006-450675393462?w=300&q=70' },
+          { id:'fat4', name:'Cupim',         desc:'Macaxeira, farofa e vinagrete', price:39, img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Porção de Batatas', items: [
+          { id:'bat1', name:'Batata Simples P',          desc:'300g batata',                                       price:20, img:'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?w=300&q=70' },
+          { id:'bat2', name:'Batata Simples G',          desc:'400g batata',                                       price:25, img:'https://images.unsplash.com/photo-1518013431117-eb1465fa5463?w=300&q=70' },
+          { id:'bat3', name:'Batata c/ Cheddar e Bacon', desc:'400g batata, cheddar e bacon 50g',                  price:33, img:'https://images.unsplash.com/photo-1630431341973-02e1b662ec35?w=300&q=70' },
+          { id:'bat4', name:'Batata à Moda do Chef',     desc:'400g batata, bacon 50g, calabresa 80g, frango 100g',price:36, img:'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300&q=70' },
+        ]
+      }
     ]
   },
+
   {
     cat: 'Espetinhos', emoji: '🍢', id: 'espetinhos',
     img: 'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&q=80',
     subcats: [
-      { label: 'O Melhor Espetinho da Cidade!', items: [
-        { id:'esp1', name:'Espetinho de Frango',   desc:'Unidade', price:9,  img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' },
-        { id:'esp2', name:'Espetinho de Tulipa',   desc:'Unidade', price:9,  img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&q=70' },
-        { id:'esp3', name:'Espetinho Contra File', desc:'Unidade', price:10, img:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&q=70' },
-        { id:'esp4', name:'Espetinho de Cupim',    desc:'Unidade', price:10, img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=70' },
-        { id:'esp5', name:'Espetinho de Carneiro', desc:'Unidade', price:11, img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' },
-        { id:'esp6', name:'Espetinho de Coracao',  desc:'Unidade', price:10, img:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&q=70' },
-        { id:'esp7', name:'Linguica Und.',          desc:'Unidade', price:6,  img:'https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=300&q=70' },
-        { id:'esp8', name:'Completo',               desc:'Farofa, vinagrete e macaxeira',        price:18, img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' },
-        { id:'esp9', name:'Completao',              desc:'Farofa, vinagrete, macaxeira e baiao', price:22, img:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&q=70' }
-      ]}
+      {
+        label: 'O Melhor Espetinho da Cidade!', items: [
+          { id:'esp1', name:'Espetinho de Frango',   desc:'Unidade — suculento e temperado',   price:9,  img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' },
+          { id:'esp2', name:'Espetinho de Tulipa',   desc:'Unidade',                           price:9,  img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=300&q=70' },
+          { id:'esp3', name:'Espetinho Contra Filé', desc:'Unidade',                           price:10, img:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&q=70' },
+          { id:'esp4', name:'Espetinho de Cupim',    desc:'Unidade',                           price:10, img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=70' },
+          { id:'esp5', name:'Espetinho de Carneiro', desc:'Unidade',                           price:11, img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' },
+          { id:'esp6', name:'Espetinho de Coração',  desc:'Unidade',                           price:10, img:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&q=70' },
+          { id:'esp7', name:'Linguiça Und.',          desc:'Unidade',                           price:6,  img:'https://images.unsplash.com/photo-1617196034183-421b4040ed20?w=300&q=70' },
+          { id:'esp8', name:'Completo',               desc:'Farofa, vinagrete e macaxeira',     price:18, img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' },
+          { id:'esp9', name:'Completão',              desc:'Farofa, vinagrete, macaxeira e baião', price:22, img:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&q=70' },
+        ]
+      }
     ]
   },
+
   {
     cat: 'Petiscos', emoji: '🍤', id: 'petiscos',
     img: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=600&q=80',
     subcats: [
-      { label: 'Petiscos', items: [
-        { id:'pet1',  name:'Isca de Peixe',             desc:'300g',            price:39, img:'https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=300&q=70' },
-        { id:'pet2',  name:'Carneiro Acebolado',         desc:'220g',            price:36, img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=70' },
-        { id:'pet3',  name:'Camarao a Moda Chef',        desc:'12 unidades',     price:50, img:'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=300&q=70' },
-        { id:'pet4',  name:'Camarao ao Alho e Oleo',    desc:'300g',            price:40, img:'https://images.unsplash.com/photo-1625943553852-781c6a5e5ca7?w=300&q=70' },
-        { id:'pet5',  name:'Filezinho com Fritas',       desc:'Frango frito com fritas crocantes', price:46, img:'https://images.unsplash.com/photo-1518013431117-eb1465fa5463?w=300&q=70' },
-        { id:'pet6',  name:'Carne de Sol com Macaxeira', desc:'Sertanejo de verdade',              price:44, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
-        { id:'pet7',  name:'Bolinho de Bacalhau',        desc:'10 unidades',     price:32, img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&q=70' },
-        { id:'pet8',  name:'Queijo Coalho Quente',       desc:'150g',            price:20, img:'https://images.unsplash.com/photo-1486297678162-eb2a19b0a318?w=300&q=70' },
-        { id:'pet9',  name:'Tripa Bovina',               desc:'300g',            price:30, img:'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=300&q=70' },
-        { id:'pet10', name:'Calabresa Acebolada',        desc:'Petisco classico', price:32, img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' }
-      ]},
-      { label: 'Arrumadinhos - Porcao Individual', items: [
-        { id:'arr1', name:'Arrumadinhos Carne de Sol',  desc:'Vinagrete, farofa, macaxeira, baiao de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'arr2', name:'Arrumadinhos Frango',        desc:'Vinagrete, farofa, macaxeira, baiao de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'arr3', name:'Arrumadinhos Calabresa',     desc:'Vinagrete, farofa, macaxeira, baiao de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'arr4', name:'Arrumadinhos Bode',          desc:'Vinagrete, farofa, macaxeira, baiao de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'arr5', name:'Arrumadinhos Cupim',         desc:'Vinagrete, farofa, macaxeira, baiao de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'arr6', name:'Arrumadinhos Contra File',   desc:'Vinagrete, farofa, macaxeira, baiao de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' }
-      ]},
-      { label: 'Escondidino - Porcao Individual', items: [
-        { id:'esc1', name:'Escondidino Carne de Sol',  desc:'Pure de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
-        { id:'esc2', name:'Escondidino Frango',        desc:'Pure de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
-        { id:'esc3', name:'Escondidino Calabresa',     desc:'Pure de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
-        { id:'esc4', name:'Escondidino Bode',          desc:'Pure de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
-        { id:'esc5', name:'Escondidino Contra File',   desc:'Pure de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' }
-      ]}
+      {
+        label: 'Petiscos', items: [
+          { id:'pet1', name:'Isca de Peixe',             desc:'300g', price:39, img:'https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=300&q=70' },
+          { id:'pet2', name:'Carneiro Acebolado',         desc:'220g', price:36, img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=300&q=70' },
+          { id:'pet3', name:'Camarão à Moda Chef',        desc:'12 unidades', price:50, img:'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=300&q=70' },
+          { id:'pet4', name:'Camarão ao Alho e Óleo',    desc:'300g', price:40, img:'https://images.unsplash.com/photo-1625943553852-781c6a5e5ca7?w=300&q=70' },
+          { id:'pet5', name:'Filezinho com Fritas',       desc:'Frango frito com fritas crocantes', price:46, img:'https://images.unsplash.com/photo-1518013431117-eb1465fa5463?w=300&q=70' },
+          { id:'pet6', name:'Carne de Sol com Macaxeira', desc:'Sertanejo de verdade', price:44, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
+          { id:'pet7', name:'Bolinho de Bacalhau',        desc:'10 unidades', price:32, img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&q=70' },
+          { id:'pet8', name:'Queijo Coalho Quente',       desc:'150g', price:20, img:'https://images.unsplash.com/photo-1486297678162-eb2a19b0a318?w=300&q=70' },
+          { id:'pet9', name:'Tripa Bovina',               desc:'300g', price:30, img:'https://images.unsplash.com/photo-1603105037880-880cd4edfb0d?w=300&q=70' },
+          { id:'pet10',name:'Calabresa Acebolada',        desc:'Petisco clássico', price:32, img:'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Arrumadinhos — Porção Individual', items: [
+          { id:'arr1', name:'Arrumadinhos Carne de Sol',  desc:'Vinagrete, farofa, macaxeira, baião de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'arr2', name:'Arrumadinhos Frango',        desc:'Vinagrete, farofa, macaxeira, baião de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'arr3', name:'Arrumadinhos Calabresa',     desc:'Vinagrete, farofa, macaxeira, baião de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'arr4', name:'Arrumadinhos Bode',          desc:'Vinagrete, farofa, macaxeira, baião de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'arr5', name:'Arrumadinhos Cupim',         desc:'Vinagrete, farofa, macaxeira, baião de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'arr6', name:'Arrumadinhos Contra Filé',   desc:'Vinagrete, farofa, macaxeira, baião de dois e alface', price:25, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Escondidino — Porção Individual', items: [
+          { id:'esc1', name:'Escondidino Carne de Sol',  desc:'Purê de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
+          { id:'esc2', name:'Escondidino Frango',        desc:'Purê de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
+          { id:'esc3', name:'Escondidino Calabresa',     desc:'Purê de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
+          { id:'esc4', name:'Escondidino Bode',          desc:'Purê de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
+          { id:'esc5', name:'Escondidino Contra Filé',   desc:'Purê de macaxeira e arroz', price:29, img:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=300&q=70' },
+        ]
+      }
     ]
   },
+
   {
-    cat: 'Refeicoes', emoji: '🍽', id: 'refeicoes',
+    cat: 'Refeições', emoji: '🍽️', id: 'refeicoes',
     img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',
     subcats: [
-      { label: 'Refeicoes - Individual / Comercial', items: [
-        { id:'ref1',  name:'Moqueca da Rancha (Tilapia e Camarao)', desc:'Individual R$39 / Comercial R$115', price:39, img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&q=70' },
-        { id:'ref2',  name:'Bacalhau com Nata',     desc:'Individual R$39 / Comercial R$117', price:39, img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&q=70' },
-        { id:'ref3',  name:'Bobo de Camarao',       desc:'Individual R$39 / Comercial R$116', price:39, img:'https://images.unsplash.com/photo-1625943553852-781c6a5e5ca7?w=300&q=70' },
-        { id:'ref4',  name:'Bobo Carne Desfiada',   desc:'Individual R$39 / Comercial R$115', price:39, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
-        { id:'ref5',  name:'Peixe Atolado',         desc:'Individual R$35 / Comercial R$100', price:35, img:'https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=300&q=70' },
-        { id:'ref6',  name:'Posta de Tilapia Frita',desc:'Individual R$30 / Comercial R$90',  price:30, img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&q=70' },
-        { id:'ref7',  name:'Peixe a Escabeche',     desc:'Individual R$35 / Comercial R$102', price:35, img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&q=70' },
-        { id:'ref8',  name:'Moqueca de Peixe',      desc:'Individual R$35 / Comercial R$100', price:35, img:'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=300&q=70' },
-        { id:'ref9',  name:'File a Cavalo',         desc:'Individual R$32 / Comercial R$101', price:32, img:'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=300&q=70' },
-        { id:'ref10', name:'File a Parmegiana',     desc:'Individual R$33 / Comercial R$105', price:33, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
-        { id:'ref11', name:'Frango a Parmegiana',   desc:'Individual R$31 / Comercial R$100', price:31, img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=300&q=70' },
-        { id:'ref12', name:'Carne de Sol na Chapa', desc:'Individual R$33 / Comercial R$92',  price:33, img:'https://images.unsplash.com/photo-1558030006-450675393462?w=300&q=70' }
-      ]},
-      { label: 'Feijoada', items: [
-        { id:'fei1', name:'Buchada',                      desc:'Tradicional nordestina', price:28, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
-        { id:'fei2', name:'Buchada Uma Bola - Porcao',    desc:'Porcao individual',      price:15, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
-        { id:'fei3', name:'Pirao de Buchada - Porcao',    desc:'Acompanhamento',         price:5,  img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'fei4', name:'Feijoada Executiva Individual', desc:'',                       price:25, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
-        { id:'fei5', name:'Feijoada Executiva pra Dois',  desc:'',                       price:35, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
-        { id:'fei6', name:'Feijoada Marmitex G',          desc:'',                       price:22, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
-        { id:'fei7', name:'Feijoada Marmitex M',          desc:'',                       price:20, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
-        { id:'fei8', name:'Feijoada Marmita P',           desc:'',                       price:18, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
-        { id:'fei9', name:'Feijao Preto - Porcao Extra',  desc:'',                       price:15, img:'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&q=70' }
-      ]},
-      { label: 'Quarta do Pirao - Somente a Noite', items: [
-        { id:'pir1', name:'Pirao de Bode',    desc:'Proteina cozida, arroz, vinagrete, pirao - serve ate 2', price:36, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'pir2', name:'Pirao de Galinha', desc:'Proteina cozida, arroz, vinagrete, pirao - serve ate 2', price:32, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'pir3', name:'Pirao de Costela', desc:'Proteina cozida, arroz, vinagrete, pirao - serve ate 2', price:34, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
-        { id:'pir4', name:'Meio Pirao',       desc:'Porcao menor',                                           price:24, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' }
-      ]},
-      { label: 'Massas (Espaguete 100g)', items: [
-        { id:'mas1', name:'Bolonhesa Tradicional', desc:'Tomate, cebola, cebolinha, coentro, alho', price:27, img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=300&q=70' },
-        { id:'mas2', name:'Molho Branco da Casa',  desc:'Calabresa, frango, bacon ou atum',         price:28, img:'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=300&q=70' },
-        { id:'mas3', name:'Molho Misto',           desc:'Misto de molhos, mucatela, coalho ou cheddar', price:29, img:'https://images.unsplash.com/photo-1598866594230-a7c12756260f?w=300&q=70' }
-      ]}
+      {
+        label: 'Refeições — Individual / Comercial', items: [
+          { id:'ref1', name:'Moqueca da Rancha (Tilápia e Camarão)', desc:'Individual R$39 / Comercial R$115', price:39, img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&q=70' },
+          { id:'ref2', name:'Bacalhau com Nata',     desc:'Individual R$39 / Comercial R$117', price:39, img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&q=70' },
+          { id:'ref3', name:'Bobó de Camarão',       desc:'Individual R$39 / Comercial R$116', price:39, img:'https://images.unsplash.com/photo-1625943553852-781c6a5e5ca7?w=300&q=70' },
+          { id:'ref4', name:'Bobó Carne Desfiada',   desc:'Individual R$39 / Comercial R$115', price:39, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
+          { id:'ref5', name:'Peixe Atolado',         desc:'Individual R$35 / Comercial R$100', price:35, img:'https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=300&q=70' },
+          { id:'ref6', name:'Posta de Tilápia Frita',desc:'Individual R$30 / Comercial R$90',  price:30, img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&q=70' },
+          { id:'ref7', name:'Peixe à Escabeche',     desc:'Individual R$35 / Comercial R$102', price:35, img:'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=300&q=70' },
+          { id:'ref8', name:'Moqueca de Peixe',      desc:'Individual R$35 / Comercial R$100', price:35, img:'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=300&q=70' },
+          { id:'ref9', name:'Filé à Cavalo',         desc:'Individual R$32 / Comercial R$101', price:32, img:'https://images.unsplash.com/photo-1551782450-17144efb9c50?w=300&q=70' },
+          { id:'ref10',name:'Filé à Parmegiana',     desc:'Individual R$33 / Comercial R$105', price:33, img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=300&q=70' },
+          { id:'ref11',name:'Frango à Parmegiana',   desc:'Individual R$31 / Comercial R$100', price:31, img:'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=300&q=70' },
+          { id:'ref12',name:'Carne de Sol na Chapa', desc:'Individual R$33 / Comercial R$92',  price:33, img:'https://images.unsplash.com/photo-1558030006-450675393462?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Feijoada', items: [
+          { id:'fei1', name:'Buchada',                     desc:'Tradicional nordestina', price:28, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
+          { id:'fei2', name:'Buchada Uma Bola — Porção',   desc:'Porção individual',      price:15, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
+          { id:'fei3', name:'Pirão de Buchada — Porção',   desc:'Acompanhamento',         price:5,  img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'fei4', name:'Feijoada Executiva Individual',desc:'',                       price:25, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
+          { id:'fei5', name:'Feijoada Executiva pra Dois', desc:'',                       price:35, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
+          { id:'fei6', name:'Feijoada Marmitex G',         desc:'',                       price:22, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
+          { id:'fei7', name:'Feijoada Marmitex M',         desc:'',                       price:20, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
+          { id:'fei8', name:'Feijoada Marmita P',          desc:'',                       price:18, img:'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&q=70' },
+          { id:'fei9', name:'Feijão Preto — Porção Extra', desc:'',                       price:15, img:'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Quarta do Pirão — Somente à Noite', items: [
+          { id:'pir1', name:'Pirão de Bode',    desc:'Proteína cozida, arroz, vinagrete, pirão — serve até 2', price:36, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'pir2', name:'Pirão de Galinha', desc:'Proteína cozida, arroz, vinagrete, pirão — serve até 2', price:32, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'pir3', name:'Pirão de Costela', desc:'Proteína cozida, arroz, vinagrete, pirão — serve até 2', price:34, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+          { id:'pir4', name:'Meio Pirão',       desc:'Porção menor',                                           price:24, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Massas (Espaguete 100g)', items: [
+          { id:'mas1', name:'Bolonhesa Tradicional', desc:'Tomate, cebola, cebolinha, coentro, alho', price:27, img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=300&q=70' },
+          { id:'mas2', name:'Molho Branco da Casa',  desc:'Calabresa, frango, bacon ou atum',         price:28, img:'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=300&q=70' },
+          { id:'mas3', name:'Molho Misto',           desc:'Misto de molhos, muçarela, coalho ou cheddar', price:29, img:'https://images.unsplash.com/photo-1598866594230-a7c12756260f?w=300&q=70' },
+        ]
+      }
     ]
   },
+
   {
     cat: 'Cervejas', emoji: '🍺', id: 'cervejas',
     img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=600&q=80',
     subcats: [
-      { label: 'Cerveja Piriguete (Unid. / Balde com 5)', items: [
-        { id:'cerv1', name:'Skol / Devassa 300ml',     desc:'Unidade R$5 / Balde R$25', price:5,  img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
-        { id:'cerv2', name:'Brahma Chopp 300ml',       desc:'Unidade R$5 / Balde R$26', price:5,  img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
-        { id:'cerv3', name:'Bohemia Puro Malte 300ml', desc:'Unidade R$6 / Balde R$30', price:6,  img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
-        { id:'cerv4', name:'Original / Amstel 300ml',  desc:'Unidade R$6 / Balde R$30', price:6,  img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' }
-      ]},
-      { label: 'Long Neck', items: [
-        { id:'lng1', name:'Heineken Long',       desc:'',           price:12, img:'https://images.unsplash.com/photo-1624374566285-09b48543db45?w=300&q=70' },
-        { id:'lng2', name:'Heineken Long Zero',  desc:'Sem alcool', price:12, img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
-        { id:'lng3', name:'Stella Artois Long',  desc:'',           price:9,  img:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=300&q=70' },
-        { id:'lng4', name:'Stella Gold Long',    desc:'',           price:10, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
-        { id:'lng5', name:'Budweiser Long Zero', desc:'Sem alcool', price:10, img:'https://images.unsplash.com/photo-1571671022507-17bc9d6c6c4c?w=300&q=70' },
-        { id:'lng6', name:'Budweiser Long',      desc:'',           price:10, img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&q=70' }
-      ]},
-      { label: 'Cerveja 600ml', items: [
-        { id:'c6_1',  name:'Heineken 600ml',           desc:'', price:18, img:'https://images.unsplash.com/photo-1624374566285-09b48543db45?w=300&q=70' },
-        { id:'c6_2',  name:'Devassa / Skol 600ml',     desc:'', price:10, img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
-        { id:'c6_3',  name:'Amstel 600ml',             desc:'', price:12, img:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=300&q=70' },
-        { id:'c6_4',  name:'Budweiser 600ml',          desc:'', price:13, img:'https://images.unsplash.com/photo-1571671022507-17bc9d6c6c4c?w=300&q=70' },
-        { id:'c6_5',  name:'Stella Artois 600ml',      desc:'', price:13, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
-        { id:'c6_6',  name:'Spaten 600ml',             desc:'', price:12, img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&q=70' },
-        { id:'c6_7',  name:'Original 600ml',           desc:'', price:12, img:'https://images.unsplash.com/photo-1571671022507-17bc9d6c6c4c?w=300&q=70' },
-        { id:'c6_8',  name:'Brahma Duplo Malte 600ml', desc:'', price:12, img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
-        { id:'c6_9',  name:'Brahma Chopp 600ml',       desc:'', price:11, img:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=300&q=70' },
-        { id:'c6_10', name:'Bohemia 600ml',            desc:'', price:12, img:'https://images.unsplash.com/photo-1624374566285-09b48543db45?w=300&q=70' }
-      ]}
+      {
+        label: 'Cerveja Piriguete (Unid. / Balde com 5)', items: [
+          { id:'cerv1', name:'Skol / Devassa 300ml',  desc:'Unidade R$5 / Balde R$25', price:5, img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
+          { id:'cerv2', name:'Brahma Chopp 300ml',     desc:'Unidade R$5 / Balde R$26', price:5, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
+          { id:'cerv3', name:'Bohemia Puro Malte 300ml',  desc:'Unidade R$6 / Balde R$30', price:6, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
+          { id:'cerv4', name:'Original / Amstel 300ml',   desc:'Unidade R$6 / Balde R$30', price:6, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Long Neck', items: [
+          { id:'lng1', name:'Heineken Long',       desc:'',          price:12, img:'https://images.unsplash.com/photo-1624374566285-09b48543db45?w=300&q=70' },
+          { id:'lng2', name:'Heineken Long Zero',  desc:'Sem álcool',price:12, img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
+          { id:'lng3', name:'Stella Artois Long',  desc:'',          price:9,  img:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=300&q=70' },
+          { id:'lng4', name:'Stella Gold Long',    desc:'',          price:10, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
+          { id:'lng5', name:'Budweiser Long Zero', desc:'Sem álcool',price:10, img:'https://images.unsplash.com/photo-1571671022507-17bc9d6c6c4c?w=300&q=70' },
+          { id:'lng6', name:'Budweiser Long',      desc:'',          price:10, img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Cerveja 600ml', items: [
+          { id:'c6_1', name:'Heineken 600ml',          desc:'', price:18, img:'https://images.unsplash.com/photo-1624374566285-09b48543db45?w=300&q=70' },
+          { id:'c6_2', name:'Devassa / Skol 600ml',    desc:'', price:10, img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
+          { id:'c6_3', name:'Amstel 600ml',            desc:'', price:12, img:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=300&q=70' },
+          { id:'c6_4', name:'Budweiser 600ml',         desc:'', price:13, img:'https://images.unsplash.com/photo-1571671022507-17bc9d6c6c4c?w=300&q=70' },
+          { id:'c6_5', name:'Stella Artois 600ml',     desc:'', price:13, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
+          { id:'c6_6', name:'Spaten 600ml',            desc:'', price:12, img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&q=70' },
+          { id:'c6_7', name:'Original 600ml',          desc:'', price:12, img:'https://images.unsplash.com/photo-1571671022507-17bc9d6c6c4c?w=300&q=70' },
+          { id:'c6_8', name:'Brahma Duplo Malte 600ml',desc:'', price:12, img:'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?w=300&q=70' },
+          { id:'c6_9', name:'Brahma Chopp 600ml',      desc:'', price:11, img:'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=300&q=70' },
+          { id:'c6_10',name:'Bohemia 600ml',           desc:'', price:12, img:'https://images.unsplash.com/photo-1624374566285-09b48543db45?w=300&q=70' },
+        ]
+      }
     ]
   },
+
   {
     cat: 'Drinks', emoji: '🍹', id: 'drinks',
     img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=80',
     subcats: [
-      { label: 'Drinks Especiais', items: [
-        { id:'dr1',  name:'A Moda da Casa',               desc:'Gelo, vodka, acucar, fruta, picole',                              price:17, img:'https://images.unsplash.com/photo-1546171753-97d7676e4602?w=300&q=70' },
-        { id:'dr2',  name:'Coquetel de Frutas Sem Alcool', desc:'Mix de frutas, gelo, leite condensado, acucar e creme de leite', price:15, img:'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=300&q=70' },
-        { id:'dr3',  name:'Coquetel de Frutas com Alcool', desc:'Mix de frutas, gelo, leite condensado e vodka',                  price:18, img:'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=300&q=70' },
-        { id:'dr4',  name:'Nevada',                       desc:'Fruta da escolha, gelo, leite condensado e vodka',               price:18, img:'https://images.unsplash.com/photo-1601924582970-9238bcb495d6?w=300&q=70' },
-        { id:'dr5',  name:'Nevada Sem Alcool',            desc:'Fruta da escolha, gelo, leite condensado e refrigerante',        price:16, img:'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=300&q=70' },
-        { id:'dr6',  name:'Margarita',                    desc:'Tequila, limao, hortela, acucar, sal e limao na borda',          price:17, img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&q=70' },
-        { id:'dr7',  name:'Lagoa Azul',                   desc:'Vodka, limao, curacau blue, gelo, acucar e refri de limao',      price:19, img:'https://images.unsplash.com/photo-1589318228533-64fd5e23db16?w=300&q=70' },
-        { id:'dr8',  name:'Danado de Bom',                desc:'Malibu, gim, leite de coco, creme de leite, chantilly',         price:22, img:'https://images.unsplash.com/photo-1570691079236-4bca6c45d440?w=300&q=70' },
-        { id:'dr9',  name:'Valei-me Nossa Senhora',       desc:'Pitaia, gim, gelo, refrigerante de limao e chantilly',           price:19, img:'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&q=70' },
-        { id:'dr10', name:'Cozumel',                      desc:'Cerveja, limao, sal e gelo',                                     price:13, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
-        { id:'dr11', name:'Cochilo de Leve',              desc:'Maracuja, gelo, leite de coco, groselha, leite condensado e vodka', price:17, img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=300&q=70' },
-        { id:'dr12', name:'Pinacolada',                   desc:'Rum, abacaxi, leite de coco, leite condensado e gelo',           price:16, img:'https://images.unsplash.com/photo-1562979314-bee7453e911c?w=300&q=70' },
-        { id:'dr13', name:'Batidinha de Pacoca',          desc:'Pacoca, creme de leite, leite condensado, acucar e vodka',       price:16, img:'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=300&q=70' },
-        { id:'dr14', name:'Xote de Fogo no Rabo',         desc:'Licor de groselha, gim, tequila, pimenta e fogo',               price:10, img:'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=300&q=70' }
-      ]},
-      { label: 'Caipirinha Dobrada (Limao) - 51 ou Slova', items: [
-        { id:'cai0', name:'Caipirinha Dobrada Limao', desc:'51 ou Slova - Oferta especial!', price:20, img:'https://images.unsplash.com/photo-1574096079513-d8259312b785?w=300&q=70' }
-      ]},
-      { label: 'Caipirinha (Cachaca + Fruta)', items: [
-        { id:'cai1', name:'Caipirinha Ypioca', desc:'Cachaca Ypioca com fruta da sua escolha', price:14, img:'https://images.unsplash.com/photo-1574096079513-d8259312b785?w=300&q=70' },
-        { id:'cai2', name:'Caipirinha Caribe', desc:'Cachaca Caribe com fruta da sua escolha', price:14, img:'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=300&q=70' },
-        { id:'cai3', name:'Caipirinha Cabare', desc:'Cachaca Cabare com fruta da sua escolha', price:14, img:'https://images.unsplash.com/photo-1560180474-e8563fd75bab?w=300&q=70' }
-      ]},
-      { label: 'Caipiroska (Vodka + Fruta)', items: [
-        { id:'ck1', name:'Caipiroska Slova',    desc:'Vodka Slova com fruta da sua escolha',    price:14, img:'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=300&q=70' },
-        { id:'ck2', name:'Caipiroska Smirnoff', desc:'Vodka Smirnoff com fruta da sua escolha', price:16, img:'https://images.unsplash.com/photo-1601924582970-9238bcb495d6?w=300&q=70' },
-        { id:'ck3', name:'Caipiroska Absolut',  desc:'Vodka Absolut com fruta da sua escolha',  price:20, img:'https://images.unsplash.com/photo-1589318228533-64fd5e23db16?w=300&q=70' }
-      ]},
-      { label: 'Oroska (Rum + Fruta)', items: [
-        { id:'or1', name:'Oroska Montilla', desc:'Rum Montilla com fruta da sua escolha', price:15, img:'https://images.unsplash.com/photo-1562979314-bee7453e911c?w=300&q=70' },
-        { id:'or2', name:'Oroska Bacardi',  desc:'Rum Bacardi com fruta da sua escolha',  price:17, img:'https://images.unsplash.com/photo-1570691079236-4bca6c45d440?w=300&q=70' },
-        { id:'or3', name:'Oroska Gim',      desc:'Com fruta da sua escolha',               price:17, img:'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&q=70' }
-      ]}
+      {
+        label: 'Drinks Especiais', items: [
+          { id:'dr1',  name:'A Moda da Casa',              desc:'Gelo, vodka, açúcar, fruta, picolé',                              price:17, img:'https://images.unsplash.com/photo-1546171753-97d7676e4602?w=300&q=70' },
+          { id:'dr2',  name:'Coquetel de Frutas Sem Álcool',desc:'Mix de frutas, gelo, leite condensado, açúcar e creme de leite', price:15, img:'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=300&q=70' },
+          { id:'dr3',  name:'Coquetel de Frutas com Álcool',desc:'Mix de frutas, gelo, leite condensado e vodka',                  price:18, img:'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=300&q=70' },
+          { id:'dr4',  name:'Nevada',                      desc:'Fruta da escolha, gelo, leite condensado e vodka',                price:18, img:'https://images.unsplash.com/photo-1601924582970-9238bcb495d6?w=300&q=70' },
+          { id:'dr5',  name:'Nevada Sem Álcool',           desc:'Fruta da escolha, gelo, leite condensado e refrigerante',        price:16, img:'https://images.unsplash.com/photo-1610970881699-44a5587cabec?w=300&q=70' },
+          { id:'dr6',  name:'Margarita',                   desc:'Tequila, limão, hortelã, açúcar, sal e limão na borda',          price:17, img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=300&q=70' },
+          { id:'dr7',  name:'Lagoa Azul',                  desc:'Vodka, limão, curaçau blue, gelo, açúcar e refri de limão',      price:19, img:'https://images.unsplash.com/photo-1589318228533-64fd5e23db16?w=300&q=70' },
+          { id:'dr8',  name:'Danado de Bom',               desc:'Malibu, gim, leite de coco, creme de leite, chantilly',         price:22, img:'https://images.unsplash.com/photo-1570691079236-4bca6c45d440?w=300&q=70' },
+          { id:'dr9',  name:'Valei-me Nossa Senhora',      desc:'Pitaia, gim, gelo, refrigerante de limão e chantilly',           price:19, img:'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&q=70' },
+          { id:'dr10', name:'Cozumel',                     desc:'Cerveja, limão, sal e gelo',                                     price:13, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
+          { id:'dr11', name:'Cochilo de Leve',             desc:'Maracujá, gelo, leite de coco, groselha, leite condensado e vodka',price:17,img:'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=300&q=70' },
+          { id:'dr12', name:'Pinacolada',                  desc:'Rum, abacaxi, leite de coco, leite condensado e gelo',           price:16, img:'https://images.unsplash.com/photo-1562979314-bee7453e911c?w=300&q=70' },
+          { id:'dr13', name:'Batidinha de Paçoca',         desc:'Paçoca, creme de leite, leite condensado, açúcar e vodka',       price:16, img:'https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=300&q=70' },
+          { id:'dr14', name:'Xote de Fogo no Rabo',        desc:'Licor de groselha, gim, tequila, pimenta e fogo 🔥',             price:10, img:'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Caipirinha Dobrada (Limão) — 51 ou Slova', items: [
+          { id:'cai0', name:'Caipirinha Dobrada Limão', desc:'51 ou Slova — Oferta especial!', price:20, img:'https://images.unsplash.com/photo-1574096079513-d8259312b785?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Caipirinha (Cachaça + Fruta — morango, kiwi, limão e abacaxi)', items: [
+          { id:'cai1', name:'Caipirinha Ypióca',  desc:'Cachaça Ypióca com fruta da sua escolha', price:14, img:'https://images.unsplash.com/photo-1574096079513-d8259312b785?w=300&q=70' },
+          { id:'cai2', name:'Caipirinha Caribé',  desc:'Cachaça Caribé com fruta da sua escolha', price:14, img:'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=300&q=70' },
+          { id:'cai3', name:'Caipirinha Cabaré',  desc:'Cachaça Cabaré com fruta da sua escolha', price:14, img:'https://images.unsplash.com/photo-1560180474-e8563fd75bab?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Caipiroska (Vodka + Fruta)', items: [
+          { id:'ck1', name:'Caipiroska Slova',    desc:'Vodka Slova com fruta da sua escolha',    price:14, img:'https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=300&q=70' },
+          { id:'ck2', name:'Caipiroska Smirnoff', desc:'Vodka Smirnoff com fruta da sua escolha', price:16, img:'https://images.unsplash.com/photo-1601924582970-9238bcb495d6?w=300&q=70' },
+          { id:'ck3', name:'Caipiroska Absolut',  desc:'Vodka Absolut com fruta da sua escolha',  price:20, img:'https://images.unsplash.com/photo-1589318228533-64fd5e23db16?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Oroska (Rum + Fruta)', items: [
+          { id:'or1', name:'Oroska Montilla', desc:'Rum Montilla com fruta da sua escolha', price:15, img:'https://images.unsplash.com/photo-1562979314-bee7453e911c?w=300&q=70' },
+          { id:'or2', name:'Oroska Bacardi',  desc:'Rum Bacardi com fruta da sua escolha',  price:17, img:'https://images.unsplash.com/photo-1570691079236-4bca6c45d440?w=300&q=70' },
+          { id:'or3', name:'Oroska Gim',      desc:'Com fruta da sua escolha',               price:17, img:'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&q=70' },
+        ]
+      }
     ]
   },
+
   {
     cat: 'Bebidas', emoji: '🥤', id: 'bebidas',
     img: 'https://images.unsplash.com/photo-1586788224331-947f68671cf1?w=600&q=80',
     subcats: [
-      { label: 'Sucos', items: [
-        { id:'suc1', name:'Suco - Jarra 1L',           desc:'Sabores variados', price:16, img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&q=70' },
-        { id:'suc2', name:'Suco com Leite - Jarra 1L', desc:'Sabores variados', price:18, img:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=300&q=70' },
-        { id:'suc3', name:'Suco - Copo 500ml',         desc:'Sabores variados', price:8,  img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&q=70' },
-        { id:'suc4', name:'Suco com Leite - 500ml',    desc:'Sabores variados', price:10, img:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=300&q=70' }
-      ]},
-      { label: 'Bebidas Sem Alcool', items: [
-        { id:'bev1', name:'Refrigerante Lata',    desc:'350ml',        price:6,  img:'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&q=70' },
-        { id:'bev2', name:'Refrigerante 1 Litro', desc:'Pet 1L',       price:10, img:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&q=70' },
-        { id:'bev3', name:'Agua Mineral',         desc:'Sem gas 500ml',price:4,  img:'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=300&q=70' },
-        { id:'bev4', name:'Agua Mineral com Gas', desc:'500ml',        price:5,  img:'https://images.unsplash.com/photo-1559839914-17aae19cec71?w=300&q=70' },
-        { id:'bev5', name:'H2OH',                 desc:'500ml',        price:6,  img:'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=300&q=70' },
-        { id:'bev6', name:'Agua Tonica',          desc:'350ml',        price:5,  img:'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=300&q=70' },
-        { id:'bev7', name:'Agua de Coco (Copo)', desc:'Gelada',        price:6,  img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&q=70' },
-        { id:'bev8', name:'Energetico',           desc:'',             price:16, img:'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=300&q=70' }
-      ]},
-      { label: 'Espumantes e Vinhos', items: [
-        { id:'vin1', name:'Espumante Rio Sol Moscatel',          desc:'', price:50, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=70' },
-        { id:'vin2', name:'Espumante Rio Sol Brut Rose',         desc:'', price:40, img:'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=300&q=70' },
-        { id:'vin3', name:'Frisante',                            desc:'', price:38, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=300&q=70' },
-        { id:'vin4', name:'Vinho Tinto Seco Adega',              desc:'', price:35, img:'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=300&q=70' },
-        { id:'vin5', name:'Vinho Tinto Suave Adega',             desc:'', price:35, img:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=300&q=70' },
-        { id:'vin6', name:'Vinho Tinto Seco Pergola',            desc:'', price:33, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=300&q=70' },
-        { id:'vin7', name:'Vinho Tinto Suave Pergola',           desc:'', price:33, img:'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=300&q=70' },
-        { id:'vin8', name:'Vinho Tinto Seco Cabernet Sauvignon', desc:'', price:60, img:'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=300&q=70' }
-      ]},
-      { label: 'Doses', items: [
-        { id:'dos1',  name:'Pitu',           desc:'Dose', price:4,  img:'https://images.unsplash.com/photo-1574096079513-d8259312b785?w=300&q=70' },
-        { id:'dos2',  name:'Caribe',         desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=300&q=70' },
-        { id:'dos3',  name:'Ypioca',         desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1528823872057-9c018575b73a?w=300&q=70' },
-        { id:'dos4',  name:'Cabare',         desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=300&q=70' },
-        { id:'dos5',  name:'Sao Joao da Barra', desc:'Dose', price:5, img:'https://images.unsplash.com/photo-1567696911980-2eed69a46042?w=300&q=70' },
-        { id:'dos6',  name:'Vodka Absolut',  desc:'Dose', price:15, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
-        { id:'dos7',  name:'Vodka Smirnoff', desc:'Dose', price:8,  img:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&q=70' },
-        { id:'dos8',  name:'Vodka Slova',    desc:'Dose', price:4,  img:'https://images.unsplash.com/photo-1546171753-97d7676e4602?w=300&q=70' },
-        { id:'dos9',  name:'Campari',        desc:'Dose', price:8,  img:'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=300&q=70' },
-        { id:'dos10', name:'Bacardi',        desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=300&q=70' }
-      ]},
-      { label: 'Whisky', items: [
-        { id:'wsk1', name:'Red Label (Dose)',    desc:'', price:18, img:'https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=300&q=70' },
-        { id:'wsk2', name:'Black Label (Dose)',  desc:'', price:20, img:'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=300&q=70' },
-        { id:'wsk3', name:'Old Parr (Dose)',     desc:'', price:20, img:'https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=300&q=70' },
-        { id:'wsk4', name:'White Horse (Dose)',  desc:'', price:12, img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&q=70' },
-        { id:'wsk5', name:'Ballantines (Dose)',  desc:'', price:12, img:'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=300&q=70' }
-      ]}
+      {
+        label: 'Sucos', items: [
+          { id:'suc1', name:'Suco — Jarra 1L',          desc:'Sabores variados', price:16, img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&q=70' },
+          { id:'suc2', name:'Suco com Leite — Jarra 1L', desc:'Sabores variados', price:18, img:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=300&q=70' },
+          { id:'suc3', name:'Suco — Copo 500ml',         desc:'Sabores variados', price:8, img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&q=70' },
+          { id:'suc4', name:'Suco com Leite — 500ml',    desc:'Sabores variados', price:10, img:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Bebidas Sem Álcool', items: [
+          { id:'bev1', name:'Refrigerante Lata',      desc:'350ml', price:6,  img:'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300&q=70' },
+          { id:'bev2', name:'Refrigerante 1 Litro',   desc:'Pet 1L', price:10, img:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=300&q=70' },
+          { id:'bev3', name:'Água Mineral',           desc:'Sem gás 500ml', price:4, img:'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=300&q=70' },
+          { id:'bev4', name:'Água Mineral com Gás',   desc:'500ml', price:5,  img:'https://images.unsplash.com/photo-1559839914-17aae19cec71?w=300&q=70' },
+          { id:'bev5', name:'H2OH',                   desc:'500ml', price:6,  img:'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=300&q=70' },
+          { id:'bev6', name:'Água Tônica',            desc:'350ml', price:5,  img:'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=300&q=70' },
+          { id:'bev7', name:'Água de Coco (Copo)',    desc:'Gelada', price:6, img:'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&q=70' },
+          { id:'bev8', name:'Energético',             desc:'',       price:16, img:'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Espumantes e Vinhos', items: [
+          { id:'vin1', name:'Espumante Rio Sol Moscatel',         desc:'', price:50, img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=70' },
+          { id:'vin2', name:'Espumante Rio Sol Brut Rosé',        desc:'', price:40, img:'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=300&q=70' },
+          { id:'vin3', name:'Frisante',                           desc:'', price:38, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=300&q=70' },
+          { id:'vin4', name:'Vinho Tinto Seco Adega',             desc:'', price:35, img:'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=300&q=70' },
+          { id:'vin5', name:'Vinho Tinto Suave Adega',            desc:'', price:35, img:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=300&q=70' },
+          { id:'vin6', name:'Vinho Tinto Seco Pérgola',           desc:'', price:33, img:'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=300&q=70' },
+          { id:'vin7', name:'Vinho Tinto Suave Pérgola',          desc:'', price:33, img:'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=300&q=70' },
+          { id:'vin8', name:'Vinho Tinto Seco Cabernet Sauvignon',desc:'', price:60, img:'https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Doses Aí Dentro!', items: [
+          { id:'dos1', name:'Pítú',              desc:'Dose', price:4,  img:'https://images.unsplash.com/photo-1574096079513-d8259312b785?w=300&q=70' },
+          { id:'dos2', name:'Caribé',            desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=300&q=70' },
+          { id:'dos3', name:'Ypioca',            desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1528823872057-9c018575b73a?w=300&q=70' },
+          { id:'dos4', name:'Cabaré',            desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=300&q=70' },
+          { id:'dos5', name:'São João da Barra', desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1567696911980-2eed69a46042?w=300&q=70' },
+          { id:'dos6', name:'Vodka Absolut',     desc:'Dose', price:15, img:'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&q=70' },
+          { id:'dos7', name:'Vodka Smirnoff',    desc:'Dose', price:8,  img:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=300&q=70' },
+          { id:'dos8', name:'Vodka Slova',       desc:'Dose', price:4,  img:'https://images.unsplash.com/photo-1546171753-97d7676e4602?w=300&q=70' },
+          { id:'dos9', name:'Campari',           desc:'Dose', price:8,  img:'https://images.unsplash.com/photo-1536935338788-846bb9981813?w=300&q=70' },
+          { id:'dos10',name:'Bacardi',           desc:'Dose', price:5,  img:'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=300&q=70' },
+        ]
+      },
+      {
+        label: 'Whisky', items: [
+          { id:'wsk1', name:'Red Label (Dose)',     desc:'', price:18, img:'https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=300&q=70' },
+          { id:'wsk2', name:'Black Label (Dose)',   desc:'', price:20, img:'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=300&q=70' },
+          { id:'wsk3', name:'Old Parr (Dose)',      desc:'', price:20, img:'https://images.unsplash.com/photo-1527281400683-1aae777175f8?w=300&q=70' },
+          { id:'wsk4', name:'White Horse (Dose)',   desc:'', price:12, img:'https://images.unsplash.com/photo-1512935543094-86a5e62af86f?w=300&q=70' },
+          { id:'wsk5', name:"Ballantine's (Dose)",  desc:'', price:12, img:'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?w=300&q=70' },
+        ]
+      }
     ]
   },
+
   {
     cat: 'Extras', emoji: '🧂', id: 'extras',
     img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
     subcats: [
-      { label: 'Porcoes Extras', items: [
-        { id:'ex1',  name:'Embalagem Grande', desc:'', price:3,  img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&q=70' },
-        { id:'ex2',  name:'Vatapa 300g',      desc:'', price:10, img:'https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=300&q=70' },
-        { id:'ex3',  name:'Farofa 100g',      desc:'', price:2,  img:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&q=70' },
-        { id:'ex4',  name:'Baiao 500g',       desc:'', price:18, img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=300&q=70' },
-        { id:'ex5',  name:'Arroz 400g',       desc:'', price:6,  img:'https://images.unsplash.com/photo-1536304993881-ff86e0c9e08b?w=300&q=70' },
-        { id:'ex6',  name:'Salada Fresca',    desc:'', price:5,  img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&q=70' },
-        { id:'ex7',  name:'Vinagrete 150g',   desc:'', price:4,  img:'https://images.unsplash.com/photo-1572441713132-c542fc4fe282?w=300&q=70' },
-        { id:'ex8',  name:'Macaxeira 300g',   desc:'', price:6,  img:'https://images.unsplash.com/photo-1635365734578-acf86cb9b6b4?w=300&q=70' },
-        { id:'ex9',  name:'Feijao Verde 300g',desc:'', price:7,  img:'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&q=70' },
-        { id:'ex10', name:'Pire',             desc:'', price:10, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' }
-      ]}
+      {
+        label: 'Porções Extras', items: [
+          { id:'ex1',  name:'Embalagem Grande',  desc:'', price:3,  img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=300&q=70' },
+          { id:'ex2',  name:'Vatapá 300g',       desc:'', price:10, img:'https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=300&q=70' },
+          { id:'ex3',  name:'Farofa 100g',       desc:'', price:2,  img:'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300&q=70' },
+          { id:'ex4',  name:'Baião 500g',        desc:'', price:18, img:'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=300&q=70' },
+          { id:'ex5',  name:'Arroz 400g',        desc:'', price:6,  img:'https://images.unsplash.com/photo-1536304993881-ff86e0c9e08b?w=300&q=70' },
+          { id:'ex6',  name:'Salada Fresca',     desc:'', price:5,  img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&q=70' },
+          { id:'ex7',  name:'Vinagrete 150g',    desc:'', price:4,  img:'https://images.unsplash.com/photo-1572441713132-c542fc4fe282?w=300&q=70' },
+          { id:'ex8',  name:'Macaxeira 300g',    desc:'', price:6,  img:'https://images.unsplash.com/photo-1635365734578-acf86cb9b6b4?w=300&q=70' },
+          { id:'ex9',  name:'Feijão Verde 300g', desc:'', price:7,  img:'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=300&q=70' },
+          { id:'ex10', name:'Pire',              desc:'', price:10, img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=300&q=70' },
+        ]
+      }
     ]
   }
 ];
 
-// ══ WELCOME ══
-function entrarCardapio() {
-  var input = document.getElementById('mesa-input');
+var ratingData = {};
+
+// ── WELCOME LOGIC ──
+function onMesaInput() {
+  var v = document.getElementById('mesa-input').value;
+  var btn = document.getElementById('btn-enter');
   var msg = document.getElementById('mesa-error');
-  var v = (input ? input.value : '').trim();
   var n = parseInt(v);
-  if (!v || isNaN(n) || n < 1) {
-    if (msg) { msg.style.display='block'; msg.textContent='Informe o numero da mesa'; }
-    return;
+  if (v && n > 100) {
+    btn.disabled = true;
+    btn.textContent = 'Informe o N° da mesa';
+    if (msg) { msg.style.display = 'block'; msg.textContent = 'Não temos a mesa ' + n + ' 😅'; }
+  } else if (v && n > 0) {
+    btn.disabled = false;
+    btn.textContent = 'Entrar no Cardápio';
+    if (msg) msg.style.display = 'none';
+  } else {
+    btn.disabled = true;
+    btn.textContent = 'Informe o N° da mesa';
+    if (msg) msg.style.display = 'none';
   }
-  if (n > 100) {
-    if (msg) { msg.style.display='block'; msg.textContent='Nao temos a mesa '+n; }
-    return;
-  }
-  if (msg) msg.style.display='none';
-  isDelivery = false;
-  mesaNum = String(n);
-  iniciarApp();
 }
 
-function abrirDelivery() {
-  isDelivery = true;
-  mesaNum = 'Delivery';
-  iniciarApp();
-}
-
-function iniciarApp() {
-  var label = isDelivery ? 'Delivery' : 'Mesa ' + mesaNum;
+function entrarCardapio() {
+  var v = document.getElementById('mesa-input').value;
+  if (!v || v < 1) { showToast('Informe o número da mesa'); return; }
+  mesaNum = v;
   ['topbar-mesa','topbar-mesa2','topbar-mesa3'].forEach(function(id) {
     var el = document.getElementById(id);
-    if (el) el.textContent = label;
+    if (el) el.textContent = 'Mesa ' + mesaNum;
   });
   if (!menuBuilt) { buildMenu(); buildRating(); menuBuilt = true; }
-  goPage('menu');
-  updateOrderBar();
-  if (!isDelivery) setTimeout(mostrarPerguntaAlmoco, 800);
-}
 
-function goPage(page) {
-  document.querySelectorAll('.page').forEach(function(p) {
+  // Troca páginas
+  document.querySelectorAll('.page').forEach(function(p){
     p.classList.remove('active');
     p.classList.remove('anim-in');
   });
-  var pg = document.getElementById('page-' + page);
-  if (!pg) return;
+  var pg = document.getElementById('page-menu');
   pg.classList.add('active');
   void pg.offsetWidth;
   pg.classList.add('anim-in');
+
+  var fabCart = document.getElementById('fab-cart'); if(fabCart) fabCart.style.display='flex';
+  document.getElementById('bottom-nav').style.display = 'flex';
+  ['menu','cart','garcom','rating'].forEach(function(n){
+    var nb = document.getElementById('nav-'+n);
+    if (nb) nb.classList.toggle('active', n==='menu');
+  });
+  updateOrderBar();
+
+  // Força scroll para o topo PRIMEIRO, depois anima para a seção
   document.documentElement.scrollTop = 0;
   document.body.scrollTop = 0;
-  var fab = document.getElementById('fab-cart');
-  var nav = document.getElementById('bottom-nav');
-  if (page === 'welcome') {
-    if (fab) fab.style.display = 'none';
-    if (nav) nav.style.display = 'none';
-  } else {
-    if (fab) fab.style.display = 'flex';
-    if (nav) nav.style.display = 'flex';
-  }
-  ['menu','cart','garcom','rating'].forEach(function(n) {
-    var nb = document.getElementById('nav-' + n);
-    if (nb) nb.classList.toggle('active', n === page);
+
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var firstSection = document.getElementById('section-0');
+      if (firstSection) {
+        var top = firstSection.getBoundingClientRect().top + window.pageYOffset - 98;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      }
+    });
   });
-  if (page === 'cart') {
-    renderCart();
-    var fb = document.getElementById('cart-fixed-actions');
-    if (fb) fb.style.display = cart.length > 0 ? 'flex' : 'none';
-  }
-  if (page === 'menu') updateOrderBar();
 }
 
-// ══ MENU ══
+// ── BUILD MENU ──
 function buildMenu() {
   var tabs = document.getElementById('cat-tabs');
   var sections = document.getElementById('menu-sections');
-  if (!tabs || !sections) return;
   tabs.innerHTML = ''; sections.innerHTML = '';
+
   MENU.forEach(function(cat, ci) {
+    // Tab
     var tab = document.createElement('button');
     tab.className = 'cat-tab' + (ci === 0 ? ' active' : '');
-    tab.textContent = cat.emoji + ' ' + cat.cat;
+    tab.innerHTML = cat.emoji + ' ' + cat.cat;
     tab.onclick = (function(i){ return function(){ scrollToSection(i); }; })(ci);
     tabs.appendChild(tab);
+
+    // Section
     var sec = document.createElement('div');
     sec.id = 'section-' + ci;
+
     var html = '<div class="cat-section-card">';
-    html += '<div class="cat-banner"><img src="' + cat.img + '" loading="lazy" alt=""><div class="cat-banner-label"><span>' + cat.emoji + ' ' + cat.cat + '</span></div></div>';
-    html += '<div class="items-grid" id="grid-' + ci + '"></div></div>';
+    html += '<div class="cat-banner"><img src="' + cat.img + '" loading="lazy" alt="' + cat.cat + '"><div class="cat-banner-label"><span>' + cat.emoji + ' ' + cat.cat + '</span></div></div>';
+    html += '<div class="items-grid" id="grid-' + ci + '"></div>';
+    html += '</div>';
     sec.innerHTML = html;
     sections.appendChild(sec);
+
+    // Items
     var grid = document.getElementById('grid-' + ci);
     cat.subcats.forEach(function(sub) {
-      var st = document.createElement('div');
-      st.className = 'subcategory-title';
-      st.textContent = sub.label;
-      grid.appendChild(st);
+      // Subcategory label
+      var stitle = document.createElement('div');
+      stitle.className = 'subcategory-title';
+      stitle.textContent = sub.label;
+      grid.appendChild(stitle);
+
       sub.items.forEach(function(item) {
         var card = document.createElement('div');
         card.className = 'item-card';
@@ -2095,14 +1746,14 @@ function buildMenu() {
           ? 'R$ ' + item.price.toFixed(2).replace('.',',') + ' / R$ ' + item.price2.toFixed(2).replace('.',',')
           : 'R$ ' + item.price.toFixed(2).replace('.',',');
         card.innerHTML =
-          '<img class="item-img" src="' + item.img + '" loading="lazy" alt="">' +
+          '<img class="item-img" src="' + item.img + '" loading="lazy" alt="' + item.name + '">' +
           '<div class="item-info">' +
             '<div class="item-name">' + item.name + '</div>' +
             (item.desc ? '<div class="item-desc">' + item.desc + '</div>' : '') +
             '<div class="item-bottom">' +
               '<div class="item-price">' + priceText + '</div>' +
               '<div class="card-qty zero" id="qty-' + item.id + '">' +
-                '<button class="card-qty-btn card-qty-minus" data-action="dec" data-id="' + item.id + '">\u2212</button>' +
+                '<button class="card-qty-btn card-qty-minus" data-action="dec" data-id="' + item.id + '">−</button>' +
                 '<div class="card-qty-num" id="qnum-' + item.id + '">0</div>' +
                 '<button class="card-qty-btn card-qty-plus" data-action="inc" data-id="' + item.id + '">+</button>' +
               '</div>' +
@@ -2112,252 +1763,471 @@ function buildMenu() {
       });
     });
   });
+
+  // Click delegation
   sections.addEventListener('click', function(e) {
     var btn = e.target.closest('.card-qty-btn');
     if (!btn) return;
     e.stopPropagation();
     if (btn.dataset.action === 'inc') addToCart(btn.dataset.id);
     else removeFromCart(btn.dataset.id);
-  });
+  }, false);
+
   setupObserver();
 }
 
 function scrollToSection(i) {
   var el = document.getElementById('section-' + i);
   if (!el) return;
-  window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 98, behavior: 'smooth' });
+  var offset = 54 + 44;
+  var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+  window.scrollTo({ top: top, behavior: 'smooth' });
   setActiveTab(i);
 }
+
 function setActiveTab(i) {
-  var tabs = document.querySelectorAll('.cat-tab');
-  tabs.forEach(function(t,ti){ t.classList.toggle('active', ti===i); });
-  if (tabs[i]) tabs[i].scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+  var tabEls = document.querySelectorAll('.cat-tab');
+  tabEls.forEach(function(t, ti){ t.classList.toggle('active', ti === i); });
+  if (tabEls[i]) tabEls[i].scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
 }
+
 function setupObserver() {
   if (!window.IntersectionObserver) return;
   var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) setActiveTab(parseInt(e.target.id.replace('section-','')));
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var idx = parseInt(entry.target.id.replace('section-',''));
+        setActiveTab(idx);
+      }
     });
-  }, { rootMargin:'-54px 0px -60% 0px', threshold:0 });
-  MENU.forEach(function(_,i){ var el=document.getElementById('section-'+i); if(el) obs.observe(el); });
+  }, { rootMargin: '-54px 0px -60% 0px', threshold: 0 });
+  MENU.forEach(function(_, i){ var el=document.getElementById('section-'+i); if(el) obs.observe(el); });
 }
 
-// ══ CART ══
+// ── CART LOGIC ──
 function findItem(id) {
   var found = null;
   MENU.forEach(function(c){ c.subcats.forEach(function(s){ s.items.forEach(function(it){ if(it.id===id) found=it; }); }); });
   return found;
 }
+
 function addToCart(id) {
   var item = findItem(id); if (!item) return;
   var ex = cart.find(function(c){ return c.id===id; });
   if (ex) ex.qty++;
-  else cart.push({ id:id, name:item.name, price:item.price, qty:1 });
-  updateCardQty(id); updateCartCount(); updateOrderBar(); flyToCartAnimation(id);
+  else cart.push({ id:id, name:item.name, price:item.price, qty:1, note:'' });
+  updateCardQty(id);
+  updateCartCount();
+  updateOrderBar();
+  flyToCartAnimation(id);
 }
+
+function flyToCartAnimation(id) {
+  var qtyEl = document.getElementById('qty-' + id);
+  if (!qtyEl) return;
+  var card = qtyEl.closest('.item-card');
+  if (!card) return;
+  var cardImg = card.querySelector('.item-img');
+  if (!cardImg) return;
+  var cartFab = document.getElementById('fab-cart') || document.querySelector('.cart-fab');
+  if (!cartFab) return;
+
+  var fromRect = cardImg.getBoundingClientRect();
+  var toRect   = cartFab.getBoundingClientRect();
+
+  var clone = document.createElement('div');
+  clone.className = 'fly-item';
+  clone.style.cssText = 'left:'+fromRect.left+'px;top:'+fromRect.top+'px;width:'+fromRect.width+'px;height:'+fromRect.height+'px;transform-origin:center center;';
+  var cloneImg = document.createElement('img');
+  cloneImg.src = cardImg.src;
+  cloneImg.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+  clone.appendChild(cloneImg);
+  document.body.appendChild(clone);
+
+  var dx = (toRect.left + toRect.width/2) - (fromRect.left + fromRect.width/2);
+  var dy = (toRect.top + toRect.height/2) - (fromRect.top + fromRect.height/2);
+  clone.style.setProperty('--fly-x', dx+'px');
+  clone.style.setProperty('--fly-y', dy+'px');
+
+  requestAnimationFrame(function() {
+    clone.style.animation = 'flyToCart 0.65s cubic-bezier(0.25,0.46,0.45,0.94) forwards';
+  });
+  clone.addEventListener('animationend', function() {
+    clone.remove();
+    cartFab.style.animation = 'none';
+    requestAnimationFrame(function(){ cartFab.style.animation = 'cartBounce 0.44s ease'; });
+    cartFab.addEventListener('animationend', function(){ cartFab.style.animation=''; }, { once: true });
+  }, { once: true });
+}
+
 function removeFromCart(id) {
   var ex = cart.find(function(c){ return c.id===id; });
   if (!ex) return;
   ex.qty--;
   if (ex.qty <= 0) cart = cart.filter(function(c){ return c.id!==id; });
-  updateCardQty(id); updateCartCount(); updateOrderBar();
+  updateCardQty(id);
+  updateCartCount();
+  updateOrderBar();
 }
+
 function updateCardQty(id) {
-  var ci = cart.find(function(c){ return c.id===id; });
-  var qty = ci ? ci.qty : 0;
-  var box = document.getElementById('qty-'+id);
-  var num = document.getElementById('qnum-'+id);
-  if (box) box.classList.toggle('zero', qty===0);
+  var cartItem = cart.find(function(c){ return c.id===id; });
+  var qty = cartItem ? cartItem.qty : 0;
+  var box = document.getElementById('qty-' + id);
+  var num = document.getElementById('qnum-' + id);
+  if (!box) return;
+  box.classList.toggle('zero', qty === 0);
   if (num) num.textContent = qty;
 }
+
 function updateCartCount() {
   var t = cart.reduce(function(a,b){ return a+b.qty; }, 0);
+  // Atualiza FAB carrinho
   var fc = document.getElementById('fab-cart-count');
   if (fc) fc.textContent = t;
+  // Mantém compatibilidade caso cart-count exista
+  var cc = document.getElementById('cart-count');
+  if (cc) cc.textContent = t;
 }
+
+function abrirModalSobre() {
+  document.getElementById('modal-sobre').style.display = 'flex';
+}
+function fecharModalSobre() {
+  document.getElementById('modal-sobre').style.display = 'none';
+}
+
 function updateOrderBar() {
   var bar = document.getElementById('order-bar');
-  if (!bar) return;
   if (cart.length === 0) { bar.classList.remove('visible'); return; }
   bar.classList.add('visible');
   var qty = cart.reduce(function(a,b){ return a+b.qty; }, 0);
   var sub = cart.reduce(function(a,b){ return a+b.price*b.qty; }, 0);
-  var e1 = document.getElementById('order-bar-count');
-  var e2 = document.getElementById('order-bar-total');
-  if (e1) e1.textContent = qty + (qty===1?' item':' itens');
-  if (e2) e2.textContent = 'R$ ' + sub.toFixed(2).replace('.',',');
-}
-function flyToCartAnimation(id) {
-  var qtyEl = document.getElementById('qty-'+id);
-  if (!qtyEl) return;
-  var card = qtyEl.closest('.item-card');
-  if (!card) return;
-  var img = card.querySelector('.item-img');
-  var fab = document.getElementById('fab-cart');
-  if (!img || !fab) return;
-  var fr = img.getBoundingClientRect();
-  var tr = fab.getBoundingClientRect();
-  var clone = document.createElement('div');
-  clone.className = 'fly-item';
-  clone.style.cssText = 'left:'+fr.left+'px;top:'+fr.top+'px;width:'+fr.width+'px;height:'+fr.height+'px;transform-origin:center center;';
-  var ci = document.createElement('img');
-  ci.src = img.src;
-  ci.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
-  clone.appendChild(ci);
-  document.body.appendChild(clone);
-  clone.style.setProperty('--fly-x', ((tr.left+tr.width/2)-(fr.left+fr.width/2))+'px');
-  clone.style.setProperty('--fly-y', ((tr.top+tr.height/2)-(fr.top+fr.height/2))+'px');
-  requestAnimationFrame(function(){ clone.style.animation='flyToCart 0.65s cubic-bezier(0.25,0.46,0.45,0.94) forwards'; });
-  clone.addEventListener('animationend', function(){
-    clone.remove();
-    fab.style.animation='cartBounce 0.44s ease';
-    fab.addEventListener('animationend', function(){ fab.style.animation=''; }, { once:true });
-  }, { once:true });
+  document.getElementById('order-bar-count').textContent = qty + (qty===1?' item':' itens');
+  document.getElementById('order-bar-total').textContent = 'R$ ' + sub.toFixed(2).replace('.',',');
 }
 
-// ══ RENDER CART ══
-function hasBebida() {
-  var ids = [];
-  [4,5,6].forEach(function(ci){ if(MENU[ci]) MENU[ci].subcats.forEach(function(s){ s.items.forEach(function(it){ ids.push(it.id); }); }); });
-  return ids.some(function(id){ return cart.find(function(c){ return c.id===id && c.qty>0; }); });
-}
-function renderCart() {
-  var container = document.getElementById('cart-container');
-  if (!container) return;
-  if (cart.length === 0) {
-    container.innerHTML = '<div class="cart-empty">Seu pedido esta vazio.<br>Explore o cardapio!</div>';
-    var fb = document.getElementById('cart-fixed-actions');
-    if (fb) fb.style.display = 'none';
-    return;
-  }
-  var sub = cart.reduce(function(a,b){ return a+b.price*b.qty; }, 0);
-  var html = '<div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px;">';
-  cart.forEach(function(item, idx) {
-    html += '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(212,180,131,0.14);border-radius:8px;padding:10px 12px;">';
-    html += '<div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;">';
-    html += '<div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700;color:#F5EDD8;flex:1;">' + item.name + '</div>';
-    html += '<div style="font-family:Oswald,sans-serif;font-size:13px;font-weight:600;color:#F0C419;">R$ ' + (item.price*item.qty).toFixed(2).replace('.',',') + '</div>';
-    html += '</div><div style="display:flex;align-items:center;gap:10px;">';
-    html += '<button style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(212,180,131,0.3);background:none;color:#D4AC0D;font-size:16px;cursor:pointer;" class="qty-btn" data-action="dec" data-idx="'+idx+'">\u2212</button>';
-    html += '<div style="font-family:Oswald,sans-serif;font-size:14px;font-weight:600;color:#F5EDD8;min-width:16px;text-align:center;">'+item.qty+'</div>';
-    html += '<button style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(212,180,131,0.3);background:none;color:#D4AC0D;font-size:16px;cursor:pointer;" class="qty-btn" data-action="inc" data-idx="'+idx+'">+</button>';
-    html += '</div></div>';
-  });
-  html += '</div>';
-  html += '<div style="padding:0 14px 4px"><textarea class="cart-note" id="global-note" placeholder="Observacoes gerais...">'+( globalNote||'')+'</textarea></div>';
-  if (isDelivery) {
-    html += '<div style="padding:0 14px 8px;display:flex;flex-direction:column;gap:8px;">';
-    html += '<div style="font-family:Inter,sans-serif;font-size:9px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(212,180,131,0.55);">Endereco de Entrega</div>';
-    html += '<input id="del-rua" placeholder="Rua" style="background:rgba(255,255,255,0.04);border:1px solid rgba(212,180,131,0.2);border-radius:6px;padding:10px 12px;color:#F5EDD8;font-family:Inter,sans-serif;font-size:13px;outline:none;width:100%;">';
-    html += '<div style="display:flex;gap:8px;">';
-    html += '<input id="del-num" placeholder="Numero" style="background:rgba(255,255,255,0.04);border:1px solid rgba(212,180,131,0.2);border-radius:6px;padding:10px 12px;color:#F5EDD8;font-family:Inter,sans-serif;font-size:13px;outline:none;width:90px;flex-shrink:0;">';
-    html += '<input id="del-bairro" placeholder="Bairro" style="background:rgba(255,255,255,0.04);border:1px solid rgba(212,180,131,0.2);border-radius:6px;padding:10px 12px;color:#F5EDD8;font-family:Inter,sans-serif;font-size:13px;outline:none;flex:1;">';
-    html += '</div></div>';
-  }
-  if (!hasBebida()) {
-    html += '<div style="margin:8px 14px 0;background:rgba(30,18,6,0.85);border:1px solid rgba(212,180,131,0.2);border-radius:10px;padding:12px 14px;">';
-    html += '<div style="font-family:Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#D4AC0D;margin-bottom:8px;text-align:center;">Adicionar uma bebida?</div>';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(4)"><span style="font-size:20px;">🍺</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Cerveja</span></button>';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(5)"><span style="font-size:20px;">🍹</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Drinks</span></button>';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(6)"><span style="font-size:20px;">🥤</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Sem Alcool</span></button>';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(6)"><span style="font-size:20px;">🍷</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Vinhos</span></button>';
-    html += '</div></div>';
-  }
-  html += '<div style="margin:18px 14px 0;border-top:1px solid rgba(212,180,131,0.15);padding-top:14px;">';
-  html += '<div style="display:flex;justify-content:space-between;font-family:Rye,serif;font-size:20px;color:#F5EDD8;"><span>Total</span><span style="color:#F0C419;">R$ ' + sub.toFixed(2).replace('.',',') + '</span></div></div>';
-  container.innerHTML = html;
-  var fb = document.getElementById('cart-fixed-actions');
-  if (fb) fb.style.display = 'flex';
-  var gn = document.getElementById('global-note');
-  if (gn) gn.oninput = function(){ globalNote = this.value; };
-  container.querySelectorAll('.qty-btn').forEach(function(btn) {
-    btn.onclick = function() {
-      var idx = parseInt(btn.dataset.idx);
-      var id = cart[idx] ? cart[idx].id : null;
-      if (btn.dataset.action === 'inc') { cart[idx].qty++; }
-      else { cart[idx].qty--; if (cart[idx].qty <= 0) { cart.splice(idx,1); if(id) updateCardQty(id); updateCartCount(); updateOrderBar(); renderCart(); return; } }
-      if (id) updateCardQty(id);
-      updateCartCount(); updateOrderBar(); renderCart();
-    };
-  });
-}
-function goToCat(i) { goPage('menu'); setTimeout(function(){ scrollToSection(i); }, 200); }
-
-// ══ ENVIAR ══
-function enviarPedido() {
-  if (cart.length === 0) { showToast('Adicione itens ao carrinho'); return; }
-  if (isDelivery) {
-    var rua = (document.getElementById('del-rua')||{}).value || '';
-    var num = (document.getElementById('del-num')||{}).value || '';
-    var bairro = (document.getElementById('del-bairro')||{}).value || '';
-    if (!rua.trim() || !num.trim() || !bairro.trim()) { showToast('Preencha rua, numero e bairro'); return; }
-  }
-  var sub = cart.reduce(function(a,b){ return a+b.price*b.qty; }, 0);
-  var msg = 'RANCHARIA\n';
-  if (isDelivery) {
-    var r = (document.getElementById('del-rua')||{}).value || '';
-    var n = (document.getElementById('del-num')||{}).value || '';
-    var b = (document.getElementById('del-bairro')||{}).value || '';
-    msg += 'DELIVERY\n' + r + ', ' + n + ' - ' + b + '\n\n';
-  } else {
-    msg += 'Mesa ' + mesaNum + '\n\n';
-  }
-  cart.forEach(function(item) {
-    msg += item.qty + 'x ' + item.name + ' - R$ ' + (item.price*item.qty).toFixed(2).replace('.',',') + '\n';
-  });
-  msg += '\nTotal: R$ ' + sub.toFixed(2).replace('.',',');
-  if (globalNote && globalNote.trim()) msg += '\n\nObs: ' + globalNote;
-  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
-}
-
-// ══ GARCOM ══
-function abrirModalGarcom() {
-  var m = document.getElementById('modal-garcom');
-  if (!m) return;
-  m.style.display = 'flex';
-  var mn = document.getElementById('modal-mesa-num');
-  if (mn) mn.textContent = mesaNum || '-';
-  var mot = document.getElementById('garcom-motivo');
-  if (mot) mot.value = '';
-  atualizarBtnGarcom();
-}
-function fecharModalGarcom() {
-  var m = document.getElementById('modal-garcom');
-  if (m) m.style.display = 'none';
-}
-function atualizarBtnGarcom() {
-  var mot = document.getElementById('garcom-motivo');
-  var btn = document.getElementById('btn-chamar-garcom');
-  if (!btn || !mot) return;
-  btn.textContent = mot.value.trim() ? 'Enviar Mensagem' : 'Apenas Chamar';
-}
-function chamarGarcom() {
-  var mot = (document.getElementById('garcom-motivo')||{}).value || '';
-  var msg = mot.trim()
-    ? 'Chamado - Mesa ' + mesaNum + '\n\n' + mot.trim()
-    : 'Chamado - Mesa ' + mesaNum + '\nO cliente precisa de atendimento.';
-  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
-  fecharModalGarcom();
-  showToast('Garcao notificado!');
-}
-
-// ══ RATING ══
+// ── RATING ──
 function buildRating() {
-  var cats = ['Atendimento','Culinaria','Ambiente','Tempo de Espera'];
-  var keys = ['cat0','cat1','cat2','cat3'];
+  var cats = [
+    { label:'Atendimento', key:'cat0' },
+    { label:'Culinária', key:'cat1' },
+    { label:'Ambiente', key:'cat2' },
+    { label:'Tempo de Espera', key:'cat3' }
+  ];
   var area = document.getElementById('rating-categories');
   if (!area) return;
   area.innerHTML = '';
-  cats.forEach(function(label, i) {
-    var key = keys[i];
-    ratingData[key] = 0;
+  cats.forEach(function(cat) {
+    ratingData[cat.key] = 0;
     var div = document.createElement('div'); div.className = 'rating-section';
-    var lbl = document.createElement('div'); lbl.className = 'rating-label'; lbl.textContent = label;
+    var lbl = document.createElement('div'); lbl.className = 'rating-label'; lbl.innerHTML = cat.label;
     div.appendChild(lbl);
-    var sd = document.createElement('div'); sd.className = 'stars'; sd.id = 'stars-'+key;
+    var sd = document.createElement('div'); sd.className = 'stars'; sd.id = 'stars-' + cat.key;
     div.appendChild(sd);
     area.appendChild(div);
-    for (var j = 1; j <= 5; j++) {
-      (function(val, k, star
+    for (var i = 1; i <= 5; i++) {
+      (function(val, k, starsEl) {
+        var s = document.createElement('span'); s.className = 'star'; s.textContent = '★';
+        s.onclick = function() {
+          ratingData[k] = val;
+          starsEl.querySelectorAll('.star').forEach(function(x, xi){ x.classList.toggle('active', xi < val); });
+        };
+        starsEl.appendChild(s);
+      })(i, cat.key, sd);
+    }
+  });
+}
+
+// ── RENDER CART ──
+function hasBebida() {
+  // IDs das categorias de bebida: cervejas (idx 4), drinks (idx 5), bebidas (idx 6)
+  var bevIds = [];
+  [4, 5, 6].forEach(function(ci) {
+    if (MENU[ci]) MENU[ci].subcats.forEach(function(s){ s.items.forEach(function(it){ bevIds.push(it.id); }); });
+  });
+  return bevIds.some(function(id){ return cart.find(function(c){ return c.id===id && c.qty>0; }); });
+}
+
+function showDrinkBar(show) {
+  var bar = document.getElementById('drink-suggest-bar');
+  if (!bar) return;
+  if (show) { bar.classList.add('show'); }
+  else { bar.style.display='none'; bar.classList.remove('show'); }
+}
+
+function goToDrinkCat(catIndex) {
+  showDrinkBar(false);
+  goPage('menu');
+  setTimeout(function() {
+    scrollToSection(catIndex);
+  }, 200);
+}
+
+function goToDrinkCatSub(catId, subLabel) {
+  var catIndex = MENU.findIndex ? MENU.findIndex(function(c){ return c.id===catId; }) : (function(){ for(var i=0;i<MENU.length;i++) if(MENU[i].id===catId) return i; return -1; })();
+  showDrinkBar(false);
+  goPage('menu');
+  setTimeout(function() {
+    if (catIndex >= 0) scrollToSection(catIndex);
+  }, 200);
+}
+
+function renderCart() {
+  var container = document.getElementById('cart-container');
+
+  // Verifica se tem bebida e mostra/oculta barra
+  var temBebida = hasBebida();
+  // drink bar rendered inline
+
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="cart-empty">Seu pedido está vazio.<br>Explore o cardápio 🍖</div>';
+    var fixedBar = document.getElementById('cart-fixed-actions');
+    if (fixedBar) fixedBar.style.display = 'none';
+    return;
+  }
+  var sub = cart.reduce(function(a,b){ return a+b.price*b.qty; }, 0);
+  var html = '<div class="cart-items" style="padding:12px 14px;display:flex;flex-direction:column;gap:8px;">';
+  cart.forEach(function(item, idx) {
+    html += '<div style="background:rgba(255,255,255,0.04);border:1px solid rgba(212,180,131,0.14);border-radius:8px;padding:10px 12px;margin-bottom:0;">';
+    // Linha 1: nome + preço
+    html += '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">';
+    html += '<div style="font-family:Inter,sans-serif;font-size:13px;font-weight:700;color:#F5EDD8;flex:1;">' + item.name + '</div>';
+    html += '<div style="font-family:Oswald,sans-serif;font-size:13px;font-weight:600;color:#F0C419;flex-shrink:0;">' + 'R$ ' + (item.price*item.qty).toFixed(2).replace('.',',') + '</div>';
+    html += '</div>';
+    // Linha 2: contadores
+    html += '<div style="display:flex;align-items:center;gap:10px;">';
+    html += '<button style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(212,180,131,0.3);background:none;color:#D4AC0D;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;" class="qty-btn" data-action="dec" data-idx="' + idx + '">−</button>';
+    html += '<div style="font-family:Oswald,sans-serif;font-size:14px;font-weight:600;color:#F5EDD8;min-width:16px;text-align:center;">' + item.qty + '</div>';
+    html += '<button style="width:22px;height:22px;border-radius:50%;border:1px solid rgba(212,180,131,0.3);background:none;color:#D4AC0D;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;" class="qty-btn" data-action="inc" data-idx="' + idx + '">+</button>';
+    html += '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  html += '<div style="padding:8px 14px 4px"><textarea class="cart-note" id="global-note" placeholder="Observações gerais (ex: sem cebola...)...">' + globalNote + '</textarea></div>';
+  if (!temBebida && cart.length > 0) {
+    html += '<div id="drink-suggest-bar" class="show">';
+    html += '<div class="drink-suggest-title">🍻 Adicionar uma bebida?</div>';
+    html += '<div class="drink-suggest-grid">';
+    html += '<button class="drink-suggest-btn" onclick="goToDrinkCat(4)"><span class="drink-suggest-icon">🍺</span><span class="drink-suggest-label">Cerveja</span></button>';
+    html += '<button class="drink-suggest-btn" onclick="goToDrinkCat(5)"><span class="drink-suggest-icon">🍹</span><span class="drink-suggest-label">Drinks</span></button>';
+    html += '<button class="drink-suggest-btn" onclick="goToDrinkCatSub(\'bebidas\',\'Sem Álcool\')"><span class="drink-suggest-icon">🥤</span><span class="drink-suggest-label">Sem Álcool</span></button>';
+    html += '<button class="drink-suggest-btn" onclick="goToDrinkCatSub(\'bebidas\',\'Vinhos\')"><span class="drink-suggest-icon">🍷</span><span class="drink-suggest-label">Vinhos</span></button>';
+    html += '</div></div>';
+  }
+  html += '<div class="cart-totals"><div class="total-row grand"><span>Total</span><span>R$ ' + sub.toFixed(2).replace('.',',') + '</span></div></div>';
+    // actions rendered in fixed bar below
+  container.innerHTML = html;
+
+  // Activate fixed action bar
+  var fixedBar = document.getElementById('cart-fixed-actions');
+  if (fixedBar) fixedBar.style.display = 'flex';
+
+  document.getElementById('global-note').oninput = function(){ globalNote = this.value; };
+  container.querySelectorAll('.qty-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var idx = parseInt(btn.dataset.idx);
+      var id = cart[idx] ? cart[idx].id : null;
+      if (btn.dataset.action === 'inc') { cart[idx].qty++; }
+      else {
+        cart[idx].qty--;
+        if (cart[idx].qty <= 0) {
+          cart.splice(idx, 1);
+          if (id) updateCardQty(id);
+          updateCartCount(); updateOrderBar(); renderCart(); return;
+        }
+      }
+      if (id) updateCardQty(id);
+      updateCartCount(); updateOrderBar(); renderCart();
+    });
+  });
+}
+
+function enviarPedido() {
+  if (cart.length===0) { showToast('Adicione itens ao carrinho'); return; }
+  var sub = cart.reduce(function(a,b){ return a+b.price*b.qty; }, 0);
+  var noteEl = document.getElementById('global-note');
+  var nota = noteEl ? noteEl.value : '';
+  var msg = '*Novo Pedido — Rancharia*\n*Mesa ' + mesaNum + '*\n------------------\n';
+  cart.forEach(function(item){ msg += '- ' + item.qty + 'x ' + item.name + '\n'; });
+  if (nota) msg += '\n*Obs:* ' + nota + '\n';
+  msg += '------------------\n*Total: R$ ' + sub.toFixed(2).replace('.',',') + '*\n\nPedido enviado pelo cardápio digital.';
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── GARÇOM ──
+function abrirModalGarcom() {
+  var m = document.getElementById('modal-garcom');
+  var mn = document.getElementById('modal-mesa-num');
+  if (mn) mn.textContent = mesaNum || '—';
+  var ta = document.getElementById('garcom-motivo'); if (ta) ta.value = '';
+  atualizarBtnGarcom();
+  m.style.display = 'flex';
+}
+function fecharModalGarcom() { document.getElementById('modal-garcom').style.display='none'; }
+function atualizarBtnGarcom() {
+  var ta = document.getElementById('garcom-motivo');
+  var btn = document.getElementById('btn-chamar-garcom');
+  if (!ta||!btn) return;
+  btn.textContent = ta.value.trim() ? 'Chamar Garçom' : 'Apenas Chamar';
+}
+function chamarGarcom() {
+  var motivo = (document.getElementById('garcom-motivo')||{}).value || '';
+  var msg = '*Rancharia* — Mesa ' + mesaNum + ' solicita o garçom.';
+  if (motivo.trim()) msg += '\nMotivo: ' + motivo.trim();
+  fecharModalGarcom();
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+  showToast('Garçom notificado! 🤠');
+  var gs = document.getElementById('garcom-status'); if (gs) gs.classList.add('show');
+}
+
+function enviarAvaliacao() {
+  // Coleta dados
+  var cats = [
+    { label:'Atendimento', key:'cat0' },
+    { label:'Culinária', key:'cat1' },
+    { label:'Ambiente', key:'cat2' },
+    { label:'Tempo de Espera', key:'cat3' }
+  ];
+  var msg = '*Avaliação — Rancharia*\n*Mesa ' + mesaNum + '*\n------------------\n';
+  cats.forEach(function(cat) {
+    var stars = ratingData[cat.key] || 0;
+    var starStr = '';
+    for (var i = 0; i < stars; i++) starStr += '⭐';
+    if (!starStr) starStr = 'Não avaliado';
+    msg += cat.label + ': ' + starStr + '\n';
+  });
+  var comentario = document.getElementById('rating-comment').value.trim();
+  if (comentario) msg += '\nComentário: ' + comentario + '\n';
+  msg += '------------------\nEnviado pelo cardápio digital.';
+  window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(msg), '_blank');
+  document.getElementById('rating-form-area').style.display='none';
+  document.getElementById('thank-you').classList.add('show');
+  showToast('Avaliação enviada! Obrigado ✨');
+}
+
+// ── PAGE NAVIGATION ──
+function goPage(name) {
+  document.querySelectorAll('.page').forEach(function(p){
+    p.classList.remove('active');
+    p.classList.remove('anim-in');
+  });
+  var pg = document.getElementById('page-' + name);
+  pg.classList.add('active');
+  // Trigger animation
+  void pg.offsetWidth; // reflow
+  pg.classList.add('anim-in');
+
+  var fabCart = document.getElementById('fab-cart');
+  var onMenu = (name === 'menu');
+  if (fabCart) fabCart.style.display = onMenu ? 'flex' : 'none';
+
+  // Hide drink bar when leaving cart
+  if (name !== 'cart') {
+    showDrinkBar(false);
+    var fb = document.getElementById('cart-fixed-actions');
+    if (fb) fb.style.display = 'none';
+  }
+
+  // Nav highlight
+  ['menu','cart','garcom','rating'].forEach(function(n){
+    var nb = document.getElementById('nav-'+n);
+    if (nb) nb.classList.toggle('active', n===name);
+  });
+  // Order bar only on menu
+  var bar = document.getElementById('order-bar');
+  if (name !== 'menu') bar.classList.remove('visible');
+  else updateOrderBar();
+  // Reseta scroll imediatamente
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  if (name === 'cart') {
+    renderCart();
+  }
+  if (name === 'menu') {
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        var firstSection = document.getElementById('section-0');
+        if (firstSection) {
+          var top = firstSection.getBoundingClientRect().top + window.pageYOffset - 98;
+          window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        }
+      });
+    });
+  }
+}
+
+function showMainPage(name) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-' + name).classList.add('active');
+}
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2300);
+}
+
+// Loading screen
+window.addEventListener('load', function() {
+  setTimeout(function() {
+    var ls = document.getElementById('loading-screen');
+    ls.style.transition = 'opacity 0.6s';
+    ls.style.opacity = '0';
+    setTimeout(function(){ ls.style.display='none'; }, 600);
+  }, 1800);
+});
+
+// URL param ?mesa=X
+(function(){
+  var m = new URLSearchParams(window.location.search).get('mesa');
+  if (m) document.getElementById('mesa-input').value = m;
+})();
+</script>
+
+<!-- MODAL SOBRE -->
+<div id="modal-sobre" onclick="if(event.target===this)fecharModalSobre()" style="position:fixed;inset:0;z-index:300;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.65);backdrop-filter:blur(5px);">
+  <div style="width:100%;max-width:480px;background:#2A1A08;border-top:2px solid #D4AC0D;border-radius:16px 16px 0 0;padding:24px 20px 40px;max-height:85vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div>
+        <div style="font-family:'Rye',serif;font-size:24px;color:#F5EDD8;line-height:1;">Rancharia</div>
+        <div style="font-family:'Inter',sans-serif;font-size:10px;letter-spacing:0.3em;color:#D4AC0D;text-transform:uppercase;margin-top:3px;">Restaurante &amp; Petiscaria</div>
+      </div>
+      <button onclick="fecharModalSobre()" style="background:none;border:1px solid rgba(212,180,131,0.25);color:rgba(212,180,131,0.6);border-radius:50%;width:30px;height:30px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">&times;</button>
+    </div>
+    <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,172,13,0.4),transparent);margin-bottom:18px;"></div>
+    <p style="font-family:'Inter',sans-serif;font-size:13px;line-height:1.75;color:rgba(245,237,216,0.8);margin-bottom:14px;">
+      A <strong style="color:#F5EDD8;">Rancharia</strong> nasceu do amor pelo sabor autêntico do sertão baiano. Localizada no coração de Juazeiro&nbsp;–&nbsp;BA, somos muito mais que um restaurante: somos um pedaço vivo da cultura nordestina, onde cada prato conta uma história.
+    </p>
+    <p style="font-family:'Inter',sans-serif;font-size:13px;line-height:1.75;color:rgba(245,237,216,0.8);margin-bottom:14px;">
+      Do espetinho caprichado na brasa à carne de sol que derrete na boca, tudo é preparado com ingredientes frescos e temperos da nossa terra. Venha como cliente, saia como família.
+    </p>
+    <p style="font-family:'Inter',sans-serif;font-size:13px;line-height:1.75;color:rgba(245,237,216,0.8);margin-bottom:24px;">
+      🕐 Seg–Sex: 11h–23h &nbsp;|&nbsp; Sáb–Dom: 10h–01h<br>
+      📍 Juazeiro – BA
+    </p>
+    <!-- Botões sociais -->
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px;">
+      <a href="https://wa.me/5574988534600" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#075e54;border:none;border-radius:8px;color:white;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:14px 16px;text-decoration:none;transition:opacity 0.2s;">
+        <svg viewBox="0 0 32 32" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#25D366"/><path d="M23.5 8.5C21.7 6.7 19.4 5.7 17 5.7c-5 0-9 4-9 9 0 1.6.4 3.1 1.2 4.5L8 26l7-1.8c1.3.7 2.8 1.1 4.3 1.1h.1c5 0 9-4 9-9-.1-2.4-1.1-4.6-2.9-6.3zm-6.5 13.9c-1.4 0-2.7-.4-3.9-1.1l-.3-.2-3 .8.8-2.9-.2-.3c-.8-1.2-1.2-2.6-1.2-4 0-4.2 3.4-7.5 7.5-7.5 2 0 3.9.8 5.3 2.2 1.4 1.4 2.2 3.3 2.2 5.3.1 4.1-3.3 7.7-7.2 7.7zm4.1-5.6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4.1-.1.1-.3 0-.4-.1-.1-.5-1.3-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 3.9 3.5.5.2 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1l-.3-.4z" fill="white"/></svg>
+        WhatsApp
+      </a>
+      <a href="https://instagram.com/rancharia_juazeiro" target="_blank" style="display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);border:none;border-radius:8px;color:white;font-family:'Inter',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:14px 16px;text-decoration:none;">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Instagram
+      </a>
+    </div>
+    <!-- Footer credit -->
+    <div style="text-align:center;border-top:1px solid rgba(212,180,131,0.12);padding-top:16px;">
+      <p style="font-family:'Inter',sans-serif;font-size:10px;color:rgba(212,180,131,0.35);letter-spacing:0.05em;margin-bottom:8px;">Quer um cardápio digital assim também?</p>
+      <a href="https://wa.me/5574988534600?text=Quero%20um%20card%C3%A1pio%20digital" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(37,211,102,0.12);border:1px solid rgba(37,211,102,0.3);border-radius:20px;color:rgba(37,211,102,0.8);font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:0.1em;padding:6px 14px;text-decoration:none;">
+        <svg viewBox="0 0 32 32" width="14" height="14" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16" fill="#25D366"/><path d="M23.5 8.5C21.7 6.7 19.4 5.7 17 5.7c-5 0-9 4-9 9 0 1.6.4 3.1 1.2 4.5L8 26l7-1.8c1.3.7 2.8 1.1 4.3 1.1h.1c5 0 9-4 9-9-.1-2.4-1.1-4.6-2.9-6.3zm-6.5 13.9c-1.4 0-2.7-.4-3.9-1.1l-.3-.2-3 .8.8-2.9-.2-.3c-.8-1.2-1.2-2.6-1.2-4 0-4.2 3.4-7.5 7.5-7.5 2 0 3.9.8 5.3 2.2 1.4 1.4 2.2 3.3 2.2 5.3.1 4.1-3.3 7.7-7.2 7.7zm4.1-5.6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4.1-.1.1-.3 0-.4-.1-.1-.5-1.3-.7-1.7-.2-.4-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 3.9 3.5.5.2 1 .4 1.4.5.6.2 1.1.2 1.5.1.5-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1l-.3-.4z" fill="white"/></svg>
+        Criar site assim
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
