@@ -1720,7 +1720,7 @@ var ratingData = {};
 
 var MENU = [
   {
-    cat: 'Entradas', emoji: '\u{1F969}', id: 'entradas',
+    cat: 'Entradas', emoji: '🥩', id: 'entradas',
     img: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80',
     subcats: [
       { label: 'Caldos (200ml / 400ml)', items: [
@@ -1758,7 +1758,7 @@ var MENU = [
     ]
   },
   {
-    cat: 'Espetinhos', emoji: '\u{1F362}', id: 'espetinhos',
+    cat: 'Espetinhos', emoji: '🍢', id: 'espetinhos',
     img: 'https://images.unsplash.com/photo-1529694157872-4e0c0f3b238b?w=600&q=80',
     subcats: [
       { label: 'O Melhor Espetinho da Cidade!', items: [
@@ -1775,7 +1775,7 @@ var MENU = [
     ]
   },
   {
-    cat: 'Petiscos', emoji: '\u{1F364}', id: 'petiscos',
+    cat: 'Petiscos', emoji: '🍤', id: 'petiscos',
     img: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=600&q=80',
     subcats: [
       { label: 'Petiscos', items: [
@@ -1808,7 +1808,7 @@ var MENU = [
     ]
   },
   {
-    cat: 'Refeicoes', emoji: '\u{1F37D}', id: 'refeicoes',
+    cat: 'Refeicoes', emoji: '🍽', id: 'refeicoes',
     img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80',
     subcats: [
       { label: 'Refeicoes - Individual / Comercial', items: [
@@ -1850,7 +1850,7 @@ var MENU = [
     ]
   },
   {
-    cat: 'Cervejas', emoji: '\u{1F37A}', id: 'cervejas',
+    cat: 'Cervejas', emoji: '🍺', id: 'cervejas',
     img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=600&q=80',
     subcats: [
       { label: 'Cerveja Piriguete (Unid. / Balde com 5)', items: [
@@ -1882,7 +1882,7 @@ var MENU = [
     ]
   },
   {
-    cat: 'Drinks', emoji: '\u{1F379}', id: 'drinks',
+    cat: 'Drinks', emoji: '🍹', id: 'drinks',
     img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=600&q=80',
     subcats: [
       { label: 'Drinks Especiais', items: [
@@ -1922,7 +1922,7 @@ var MENU = [
     ]
   },
   {
-    cat: 'Bebidas', emoji: '\u{1F964}', id: 'bebidas',
+    cat: 'Bebidas', emoji: '🥤', id: 'bebidas',
     img: 'https://images.unsplash.com/photo-1586788224331-947f68671cf1?w=600&q=80',
     subcats: [
       { label: 'Sucos', items: [
@@ -1973,7 +1973,7 @@ var MENU = [
     ]
   },
   {
-    cat: 'Extras', emoji: '\u{1F9C2}', id: 'extras',
+    cat: 'Extras', emoji: '🧂', id: 'extras',
     img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=80',
     subcats: [
       { label: 'Porcoes Extras', items: [
@@ -2259,10 +2259,10 @@ function renderCart() {
     html += '<div style="margin:8px 14px 0;background:rgba(30,18,6,0.85);border:1px solid rgba(212,180,131,0.2);border-radius:10px;padding:12px 14px;">';
     html += '<div style="font-family:Inter,sans-serif;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#D4AC0D;margin-bottom:8px;text-align:center;">Adicionar uma bebida?</div>';
     html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(4)"><span style="font-size:20px;">\u{1F37A}</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Cerveja</span></button>';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(5)"><span style="font-size:20px;">\u{1F379}</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Drinks</span></button>';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(6)"><span style="font-size:20px;">\u{1F964}</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Sem Alcool</span></button>';
-    html += '<button class="drink-suggest-btn" onclick="goToCat(6)"><span style="font-size:20px;">\u{1F377}</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Vinhos</span></button>';
+    html += '<button class="drink-suggest-btn" onclick="goToCat(4)"><span style="font-size:20px;">🍺</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Cerveja</span></button>';
+    html += '<button class="drink-suggest-btn" onclick="goToCat(5)"><span style="font-size:20px;">🍹</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Drinks</span></button>';
+    html += '<button class="drink-suggest-btn" onclick="goToCat(6)"><span style="font-size:20px;">🥤</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Sem Alcool</span></button>';
+    html += '<button class="drink-suggest-btn" onclick="goToCat(6)"><span style="font-size:20px;">🍷</span><span style="font-family:Inter,sans-serif;font-size:11px;font-weight:700;color:#F5EDD8;">Vinhos</span></button>';
     html += '</div></div>';
   }
   html += '<div style="margin:18px 14px 0;border-top:1px solid rgba(212,180,131,0.15);padding-top:14px;">';
@@ -2358,4 +2358,6 @@ function buildRating() {
     div.appendChild(lbl);
     var sd = document.createElement('div'); sd.className = 'stars'; sd.id = 'stars-'+key;
     div.appendChild(sd);
-    ar
+    area.appendChild(div);
+    for (var j = 1; j <= 5; j++) {
+      (function(val, k, star
